@@ -1,0 +1,45 @@
+{
+    "name": "AT32",
+    "title": "ArteryTek AT32",
+    "description": "Artery Technology Company, specializing in ARM® Cortex®-M4 MCU, is committed to take the lead in the 32-bit MCU industry with the support of high-end R&D technology, comprehensive silicon IP and professional integration experience.",
+    "homepage": "https://www.arterychip.com/",
+    "license": "Apache-2.0",
+    "keywords": [
+        "ARM",
+        "Cortex-M4",
+        "ArteryTek",
+        "AT32"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/ArteryTek/platform-arterytekat32.git"
+    },
+    "engines": {
+        "platformio": "^5"
+    },
+    "version": "1.0.0",
+    "frameworks": {
+        "at32firmlib": {
+            "package": "framework-at32firmlib",
+            "script": "builder/frameworks/at32firmlib.py",
+            "title": "ArteryTek AT32 Firmware Library"
+        }
+    },
+    "packages": {
+        "toolchain-gccarmnoneeabi": {
+            "type": "toolchain",
+            "owner": "platformio",
+            "version": ">=1.60301.0,<1.80000.0"
+        },
+        "framework-at32firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/amoxu/framework-at32firmlib.git"
+        },
+        "tool-openocd-at32": {
+            "type": "uploader",
+            "optional": true,
+            "version": "~0.1100.0"
+        }
+    }
+}
