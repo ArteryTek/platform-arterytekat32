@@ -33,7 +33,6 @@
         },
         "framework-at32firmlib": {
             "type": "framework",
-            "optional": true,
             "version": "https://github.com/amoxu/framework-at32firmlib.git"
         },
         "tool-openocd-at32": {
