@@ -14,6 +14,7 @@
 
 import json
 import os
+from os.path import isdir, isfile, join
 
 from platform import system
 
@@ -85,7 +86,7 @@ class Arterytekat32Platform(PlatformBase):
             debug['tools'][link] = {
                 "server": {
                     "package": "tool-openocd-at32",
-                    "executable": "bin/openocd",
+                    "executable": join("bin-"+ get_systype(), "openocd"),
                     "arguments": server_args
                 }
             }

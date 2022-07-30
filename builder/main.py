@@ -2,6 +2,7 @@ import sys
 from platform import system
 from os import makedirs
 from os.path import basename, isdir, join
+from platformio.util import get_systype
 
 from SCons.Script import (ARGUMENTS, COMMAND_LINE_TARGETS, AlwaysBuild,
                           Builder, Default, DefaultEnvironment)
@@ -149,7 +150,7 @@ elif upload_protocol in debug_tools:
     env.Replace(
         UPLOADER=join(
             platform.get_package_dir("tool-openocd-at32") or "",
-            "bin","openocd"),
+            "bin-"+ get_systype(),"openocd"),
         UPLOADERFLAGS=openocd_args,
         UPLOADCMD="$UPLOADER $UPLOADERFLAGS")
 
