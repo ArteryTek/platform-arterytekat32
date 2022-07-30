@@ -1,0 +1,30 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m4",
+    "f_cpu": "${f_cpu}L",
+    "mcu": "${SKU}",
+    "product_line": "${product_flash_series}",
+    "bsp": "${bsp}"
+  },
+  "debug": {
+    "openocd_target": "${ocd_target}",
+    "svd_path": "${Product}xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "${SKU} (${sram_options} RAM. ${Flash}K Flash)",
+  "upload": {
+    "maximum_ram_size": ${sram_size},
+    "maximum_size": ${flash_size},
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/${Product}.jsp",
+  "vendor": "Generic"
+}
