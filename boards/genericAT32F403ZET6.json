@@ -1,0 +1,30 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m4",
+    "f_cpu": "200000000L",
+    "mcu": "AT32F403ZET6",
+    "product_line": "AT32F403xE",
+    "bsp": "AT32F403"
+  },
+  "debug": {
+    "openocd_target": "at32f403xx",
+    "svd_path": "AT32F403xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "AT32F403ZET6 (96K/224K RAM. 512K Flash)",
+  "upload": {
+    "maximum_ram_size": 98304,
+    "maximum_size": 524288,
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/AT32F403.jsp",
+  "vendor": "Generic"
+}
