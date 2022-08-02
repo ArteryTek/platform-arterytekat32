@@ -101,38 +101,7 @@ debug_tools = board.get("debug.tools", {})
 upload_source = target_firm
 upload_actions = []
 
-if upload_protocol.startswith("jlink"):
-
-    def _jlink_cmd_script(env, source):
-        build_dir = env.subst("$BUILD_DIR")
-        if not isdir(build_dir):
-            makedirs(build_dir)
-        script_path = join(build_dir, "upload.jlink")
-        commands = [
-            "h",
-            "loadbin %s, %s" % (source, board.get(
-                "upload.offset_address", "0x08000000")),
-            "r",
-            "q"
-        ]
-        with open(script_path, "w") as fp:
-            fp.write("\n".join(commands))
-        return script_path
-
-    env.Replace(
-        __jlink_cmd_script=_jlink_cmd_script,
-        UPLOADER="JLink.exe" if system() == "Windows" else "JLinkExe",
-        UPLOADERFLAGS=[
-            "-device", board.get("debug", {}).get("jlink_device"),
-            "-speed", "4000",
-            "-if", ("jtag" if upload_protocol == "jlink-jtag" else "swd"),
-            "-autoconnect", "1"
-        ],
-        UPLOADCMD='$UPLOADER $UPLOADERFLAGS -CommanderScript "${__jlink_cmd_script(__env__, SOURCE)}"'
-    )
-    upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
-
-elif upload_protocol in debug_tools:
+if upload_protocol in debug_tools:
     openocd_args = [
         "-d%d" % (2 if int(ARGUMENTS.get("PIOVERBOSE", 0)) else 1)
     ]
