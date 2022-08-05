@@ -119,7 +119,7 @@ if upload_protocol in debug_tools:
     env.Replace(
         UPLOADER=join(
             platform.get_package_dir("tool-openocd-at32") or "",
-            "bin-"+ get_systype(),"openocd"),
+            "bin-"+ get_systype(), "openocd.exe" if system()=="Windows" else "openocd"),
         UPLOADERFLAGS=openocd_args,
         UPLOADCMD="$UPLOADER $UPLOADERFLAGS")
 

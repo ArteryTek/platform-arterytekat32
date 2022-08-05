@@ -23,29 +23,6 @@ from platformio.util import get_systype
 
 class Arterytekat32Platform(PlatformBase):
 
-    def configure_default_packages(self, variables, targets):
-        board = variables.get("board")
-        board_config = self.board_config(board)
-
-        default_protocol = board_config.get("upload.protocol") or ""
-
-        # configure J-LINK tool
-        jlink_conds = [
-            "jlink" in variables.get(option, "")
-            for option in ("upload_protocol", "debug_tool")
-        ]
-        if board:
-            jlink_conds.extend([
-                "jlink" in board_config.get(key, "")
-                for key in ("debug.default_tools", "upload.protocol")
-            ])
-        jlink_pkgname = "tool-jlink"
-        if not any(jlink_conds) and jlink_pkgname in self.packages:
-            del self.packages[jlink_pkgname]
-
-        return PlatformBase.configure_default_packages(self, variables,
-                                                       targets)
-
     def get_boards(self, id_=None):
         result = PlatformBase.get_boards(self, id_)
         if not result:
@@ -86,7 +63,7 @@ class Arterytekat32Platform(PlatformBase):
             debug['tools'][link] = {
                 "server": {
                     "package": "tool-openocd-at32",
-                    "executable": join("bin-"+ get_systype(), "openocd"),
+                    "executable": join("bin-"+ get_systype(), "openocd.exe" if system()=="Windows" else "openocd"),
                     "arguments": server_args
                 }
             }
