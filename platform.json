@@ -17,7 +17,7 @@
     "engines": {
         "platformio": "^5"
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "frameworks": {
         "at32firmlib": {
             "package": "framework-at32firmlib",
