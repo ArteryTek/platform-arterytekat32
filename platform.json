@@ -33,11 +33,11 @@
         },
         "framework-at32firmlib": {
             "type": "framework",
-            "version": "https://dl.git.ltd/framework-at32firmlib-2.0.0.tar.gz"
+            "version": "https://github.com/ArteryTek/framework-at32firmlib/releases/download/v2.0.0/framework-at32firmlib-2.0.0.tar.gz"
         },
         "tool-openocd-at32": {
             "type": "uploader",
-            "version": "https://dl.git.ltd/tool-openocd-at32-0.1100.220805.tar.gz"
+            "version": "https://github.com/ArteryTek/openocd/releases/download/v1.0.0/tool-openocd-at32-0.1100.220805.tar.gz"
         }
     }
 }
