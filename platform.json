@@ -28,18 +28,15 @@
     "packages": {
         "toolchain-gccarmnoneeabi": {
             "type": "toolchain",
-            "owner": "platformio",
-            "version": ">=1.60301.0,<1.80000.0"
+            "version": "https://dl.git.ltd/573fd8d-toolchain-gccarmnoneeabi-windows-1.60301.0.tar.gz"
         },
         "framework-at32firmlib": {
             "type": "framework",
-            "version": "https://github.com/amoxu/framework-at32firmlib/releases/download/latest/framework-at32firmlib.tar.gz"
+            "version": "https://dl.git.ltd/framework-at32firmlib-2.0.0.tar.gz"
         },
         "tool-openocd-at32": {
             "type": "uploader",
-            "optional": true,
-            "version": "https://github.com/amoxu/openocd-at32/releases/download/latest/tool-openocd-at32.tar.gz"
-
+            "version": "https://dl.git.ltd/tool-openocd-at32-0.1100.220805.tar.gz"
         }
     }
 }
