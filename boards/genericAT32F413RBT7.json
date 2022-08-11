@@ -5,7 +5,8 @@
     "f_cpu": "200000000L",
     "mcu": "AT32F413RBT7",
     "product_line": "AT32F413xB",
-    "bsp": "AT32F413"
+    "bsp": "AT32F413",
+    "variant": "AT32F413RBT7"
   },
   "debug": {
     "openocd_target": "at32f413xx",

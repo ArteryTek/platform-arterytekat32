@@ -5,7 +5,8 @@
     "f_cpu": "288000000L",
     "mcu": "AT32F437ZCT7",
     "product_line": "AT32F437xC",
-    "bsp": "AT32F435_437"
+    "bsp": "AT32F435_437",
+    "variant": "AT32F437ZCT7"
   },
   "debug": {
     "openocd_target": "at32f437xx",

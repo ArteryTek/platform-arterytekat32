@@ -25,8 +25,7 @@ env.Append(
     ],
 
     CPPDEFINES=[
-        ("F_CPU", "$BOARD_F_CPU"),
-        ("$BOARD_MCU")
+        ("F_CPU", "$BOARD_F_CPU")
     ],
 
     LINKFLAGS=[

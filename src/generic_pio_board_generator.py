@@ -40,7 +40,8 @@ with open(os.path.join(dirname, 'board.tpl.json'), "r") as template_file:
 with open(os.path.join(dirname, 'at32.csv')) as f:
     reader = csv.DictReader(f, delimiter=',')
     for item in reader:
-        item['SKU'] = item['SKU'].split('-')[0]
+        item['SKU'] = item['SKU']
+        item['variant'] = item['SKU'].replace('-','_')
         item['f_cpu'] = int(item['Speed']) * 1000000
         item['flash_size'] = int(item['Flash'])*1024
         item['sram_options'] = '/'.join(map(lambda x: x +

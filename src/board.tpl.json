@@ -5,7 +5,8 @@
     "f_cpu": "${f_cpu}L",
     "mcu": "${SKU}",
     "product_line": "${product_flash_series}",
-    "bsp": "${bsp}"
+    "bsp": "${bsp}",
+    "variant": "${variant}"
   },
   "debug": {
     "openocd_target": "${ocd_target}",

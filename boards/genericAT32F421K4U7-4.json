@@ -3,10 +3,10 @@
     "core": "ArteryTek AT32",
     "cpu": "cortex-m4",
     "f_cpu": "120000000L",
-    "mcu": "AT32F421C8T7",
-    "product_line": "AT32F421x8",
+    "mcu": "AT32F421K4U7-4",
+    "product_line": "AT32F421x4",
     "bsp": "AT32F421",
-    "variant": "AT32F421C8T7"
+    "variant": "AT32F421K4U7_4"
   },
   "debug": {
     "openocd_target": "at32f421xx",
@@ -15,10 +15,10 @@
   "frameworks": [
     "at32firmlib"
   ],
-  "name": "AT32F421C8T7 (16K RAM. 64K Flash)",
+  "name": "AT32F421K4U7-4 (8K RAM. 16K Flash)",
   "upload": {
-    "maximum_ram_size": 16384,
-    "maximum_size": 65536,
+    "maximum_ram_size": 8192,
+    "maximum_size": 16384,
     "protocol": "atlink",
     "protocols": [
       "cmsis-dap",

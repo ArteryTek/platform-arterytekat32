@@ -5,7 +5,8 @@
     "f_cpu": "200000000L",
     "mcu": "AT32F403ZCT6",
     "product_line": "AT32F403xC",
-    "bsp": "AT32F403"
+    "bsp": "AT32F403",
+    "variant": "AT32F403ZCT6"
   },
   "debug": {
     "openocd_target": "at32f403xx",

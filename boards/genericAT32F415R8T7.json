@@ -5,7 +5,8 @@
     "f_cpu": "150000000L",
     "mcu": "AT32F415R8T7",
     "product_line": "AT32F415x8",
-    "bsp": "AT32F415"
+    "bsp": "AT32F415",
+    "variant": "AT32F415R8T7"
   },
   "debug": {
     "openocd_target": "at32f415xx",
