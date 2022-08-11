@@ -28,7 +28,8 @@
     "packages": {
         "toolchain-gccarmnoneeabi": {
             "type": "toolchain",
-            "version": "https://dl.git.ltd/573fd8d-toolchain-gccarmnoneeabi-windows-1.60301.0.tar.gz"
+            "owner": "platformio",
+            "version": ">=1.60301.0,<1.80000.0"
         },
         "framework-at32firmlib": {
             "type": "framework",
