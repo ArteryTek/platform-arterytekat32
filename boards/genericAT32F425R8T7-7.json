@@ -1,0 +1,31 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m4",
+    "f_cpu": "96000000L",
+    "mcu": "AT32F425R8T7-7",
+    "product_line": "AT32F425x8",
+    "bsp": "AT32F425",
+    "variant": "AT32F425R8T7_7"
+  },
+  "debug": {
+    "openocd_target": "at32f425xx",
+    "svd_path": "AT32F425xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "AT32F425R8T7-7 (20K RAM. 64K Flash)",
+  "upload": {
+    "maximum_ram_size": 20480,
+    "maximum_size": 65536,
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/AT32F425.jsp",
+  "vendor": "Generic"
+}
