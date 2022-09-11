@@ -18,7 +18,7 @@ assert isdir(FRAMEWORK_DIR)
 
 def get_linker_script():
     ldscript = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "device_support", "startup", "gcc",
-                    "linker", product_line.upper() + "_FLASH.ld")
+                    "linker", product_line + "_FLASH.ld")
 
     if isfile(ldscript):
         return ldscript
