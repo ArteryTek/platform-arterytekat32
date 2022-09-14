@@ -23,7 +23,9 @@
     "protocols": [
       "cmsis-dap",
       "atlink",
-      "atlink_dap_v2"
+      "atlink_dap_v2",
+      "jlink",
+      "stlink"
     ]
   },
   "url": "https://www.arterychip.com/en/product/AT32F435.jsp",
