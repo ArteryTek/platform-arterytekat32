@@ -41,7 +41,7 @@ class Arterytekat32Platform(PlatformBase):
         if "tools" not in debug:
             debug['tools'] = {}
 
-        for link in ("cmsis-dap", "atlink", "atlink_dap_v2"):
+        for link in ("cmsis-dap", "atlink", "atlink_dap_v2", "jlink", "stlink"):
             if link not in upload_protocols or link in debug['tools']:
                 continue
 
