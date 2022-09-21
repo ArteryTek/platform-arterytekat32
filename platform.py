@@ -53,9 +53,10 @@ class Arterytekat32Platform(PlatformBase):
             else:
                 assert debug.get("openocd_target"), (
                     "Missed target configuration for %s" % board.id)
+                transport = debug.get('transport',"swd")
                 server_args.extend([
                     "-f", "interface/%s.cfg" % link,
-                    "-c", "transport select swd",
+                    "-c", "transport select %s" % (transport if link!="stlink" else "hla_"+transport),
                     "-f", "target/%s.cfg" % debug.get("openocd_target")
                 ])
                 server_args.extend(debug.get("openocd_extra_args", []))
