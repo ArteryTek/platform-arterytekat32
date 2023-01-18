@@ -18,8 +18,10 @@ env.Replace(
     CXX="arm-none-eabi-g++",
     GDB="arm-none-eabi-gdb",
     OBJCOPY="arm-none-eabi-objcopy",
+    OBJDUMP="arm-none-eabi-objdump",
     RANLIB="arm-none-eabi-gcc-ranlib",
     SIZETOOL="arm-none-eabi-size",
+    NMTOOL="arm-none-eabi-nm",
 
     ARFLAGS=["rc"],
 
@@ -58,6 +60,17 @@ env.Append(
                 "$TARGET"
             ]), "Building $TARGET"),
             suffix=".hex"
+        ),
+        ElfToAsm=Builder(
+            action=env.VerboseAction(" ".join([
+                "$OBJDUMP",
+                "-d",
+                "-S",
+                "$SOURCES",
+                ">",
+                "$TARGET"
+            ]), "Disassmbling to $TARGET"),
+            suffix=".asm"
         )
     )
 )
@@ -74,14 +87,33 @@ if "nobuild" in COMMAND_LINE_TARGETS:
     target_elf = join("$BUILD_DIR", "${PROGNAME}.elf")
     target_firm = join("$BUILD_DIR", "${PROGNAME}.bin")
     target_hex = join("$BUILD_DIR", "${PROGNAME}.hex")
+    target_asm = join("$BUILD_DIR", "${PROGNAME}.asm")
 else:
     target_elf = env.BuildProgram()
     target_firm = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     target_hex = env.ElfToHex(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+    target_asm = env.ElfToAsm(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
 
 AlwaysBuild(env.Alias("nobuild", target_firm))
 target_buildprog = env.Alias("buildprog", target_firm, target_firm)
 target_buildhex = env.Alias("buildhex", target_hex, target_hex)
+target_buildhex = env.Alias("disassembling", target_asm, target_asm)
+
+#
+# Target: Export Symbols
+#
+target_symbols = env.Alias(
+    "symbols", target_elf,
+    env.VerboseAction(" ".join([
+        "$NMTOOL",
+        "--print-size",
+        "--size-sort",
+        "-gC",
+        "$SOURCES",
+        ">",
+        join("$BUILD_DIR","symbols_${PROGNAME}.txt")
+    ]),"Exporting Symbols"))
+AlwaysBuild(target_symbols)
 
 #
 # Target: Print binary size
@@ -148,4 +180,4 @@ if any("-Wl,-T" in f for f in env.get("LINKFLAGS", [])):
 # Default targets
 #
 
-Default([target_buildprog, target_buildhex, target_size])
+Default([target_buildprog, target_buildhex, target_symbols, target_size])
