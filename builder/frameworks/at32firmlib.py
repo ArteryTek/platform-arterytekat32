@@ -1,3 +1,4 @@
+import sys
 from os.path import isdir, isfile, join
 from string import Template
 
@@ -15,9 +16,15 @@ env.SConscript("_bare.py")
 FRAMEWORK_DIR = platform.get_package_dir("framework-at32firmlib")
 assert isdir(FRAMEWORK_DIR)
 
+FRAMEWORK_LIB_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries")
+assert isdir(FRAMEWORK_LIB_DIR)
+
+FRAMEWORK_MIDDLEWARE_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "middlewares")
+
+
 
 def get_linker_script():
-    ldscript = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "device_support", "startup", "gcc",
+    ldscript = join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "device_support", "startup", "gcc",
                     "linker", product_line + "_FLASH.ld")
 
     if isfile(ldscript):
@@ -28,10 +35,10 @@ def get_linker_script():
 
 env.Append(
     CPPPATH=[
-        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "core_support"),
-        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "device_support"),
-        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "drivers", "inc"),
-        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "drivers", "src")
+        join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "core_support"),
+        join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "device_support"),
+        join(FRAMEWORK_LIB_DIR, "drivers", "inc"),
+        join(FRAMEWORK_LIB_DIR, "drivers", "src")
     ]
 )
 
@@ -54,7 +61,7 @@ libs = []
 
 libs.append(env.BuildLibrary(
     join("$BUILD_DIR", "cmsis"),
-    join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "device_support"),
+    join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "device_support"),
     src_filter=[
         "+<*.c>",
         "+<startup/gcc/startup_%s.S>" % bsp.lower()
@@ -63,8 +70,39 @@ libs.append(env.BuildLibrary(
 
 libs.append(env.BuildLibrary(
     join("$BUILD_DIR", "driver"),
-    join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "drivers", "src"),
+    join(FRAMEWORK_LIB_DIR, "drivers", "src"),
     src_filter=["+<*.c>"]
 ))
+
+middlewares = env.GetProjectOption("middlewares")
+for x in middlewares.split(","):
+    print("Middleware %s referenced." % x)
+    if x == "i2c_application_library" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())): 
+        env.Append(
+            CPPPATH=[
+                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())
+            ]
+        )
+        libs.append(env.BuildLibrary(
+            join("$BUILD_DIR", "middleware", x.strip()),
+            join(FRAMEWORK_MIDDLEWARE_DIR, x.strip()),
+            src_filter=["+<*.c>"]
+        ))
+    if x == "freertos" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())):
+        env.Append(
+            CPPPATH=[
+                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "include"),
+                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", "ARM_CM3")
+            ]
+        )
+        libs.append(env.BuildLibrary(
+            join("$BUILD_DIR", "middleware", x.strip()),
+            join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
+            src_filter=[
+                "+<*.c>",
+                "+<portable/common/*.c>",
+                "+<portable/gcc/ARM_CM3/*.c>"
+            ]
+        ))
 
 env.Append(LIBS=libs)
