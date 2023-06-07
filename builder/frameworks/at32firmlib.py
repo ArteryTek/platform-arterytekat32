@@ -51,14 +51,15 @@ extra_flags = board.get("build.extra_flags", "")
 
 libs = []
 
-libs.append(env.BuildLibrary(
-    join("$BUILD_DIR", "cmsis"),
-    join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "device_support"),
-    src_filter=[
-        "+<*.c>",
-        "+<startup/gcc/startup_%s.S>" % bsp.lower()
-    ]
-))
+if board.get("build.at32firmlib.custom_system_setup", "no") == "no":
+    libs.append(env.BuildLibrary(
+        join("$BUILD_DIR", "cmsis"),
+        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "device_support"),
+        src_filter=[
+            "+<*.c>",
+            "+<startup/gcc/startup_%s.S>" % bsp.lower()
+        ]
+    ))
 
 libs.append(env.BuildLibrary(
     join("$BUILD_DIR", "driver"),
