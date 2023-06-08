@@ -30,7 +30,8 @@ env.Append(
     CPPPATH=[
         join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "core_support"),
         join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "cmsis", "cm4", "device_support"),
-        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "drivers", "inc")
+        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "drivers", "inc"),
+        join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries", "drivers", "src")
     ]
 )
 
