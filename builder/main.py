@@ -127,6 +127,41 @@ if upload_protocol in debug_tools:
         upload_source = target_elf
     upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
 
+elif upload_protocol == "dfu":
+    hwids = board.get("build.hwids", [["0x2E3C", "0xDF11"]])
+    vid = hwids[0][0]
+    pid = hwids[0][1]
+
+    # default tool for all boards with embedded DFU bootloader over USB
+    _upload_tool = '"%s"' % join(platform.get_package_dir(
+        "tool-dfuutil") or "", "bin", "dfu-util")
+    _upload_flags = [
+        "-d", ",".join(["%s:%s" % (hwid[0], hwid[1]) for hwid in hwids]),
+        "-a", "0", "-s",
+        "%s:leave" % board.get("upload.offset_address", "0x08000000"), "-D"
+    ]
+
+    upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
+
+    # Add special DFU header to the binary image
+    env.AddPostAction(
+        join("$BUILD_DIR", "${PROGNAME}.bin"),
+        env.VerboseAction(
+            " ".join([
+                '"%s"' % join(platform.get_package_dir("tool-dfuutil") or "",
+                        "bin", "dfu-suffix"),
+                "-v %s" % vid,
+                "-p %s" % pid,
+                "-d 0xffff", "-a", "$TARGET"
+            ]), "Adding dfu suffix to ${PROGNAME}.bin"))
+    
+    env.Replace(
+        UPLOADER=_upload_tool,
+        UPLOADERFLAGS=_upload_flags,
+        UPLOADCMD='$UPLOADER $UPLOADERFLAGS "${SOURCE.get_abspath()}"')
+
+    upload_source = target_firm
+
 # custom upload tool
 elif upload_protocol == "custom":
     upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
