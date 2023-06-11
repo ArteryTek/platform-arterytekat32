@@ -22,6 +22,16 @@ from platformio.managers.platform import PlatformBase
 from platformio.util import get_systype
 
 class Arterytekat32Platform(PlatformBase):
+    
+    def configure_default_packages(self, variables, targets):
+        board = variables.get("board")
+        board_config = self.board_config(board)
+
+        default_protocol = board_config.get("upload.protocol") or ""
+        if variables.get("upload_protocol", default_protocol) == "dfu":
+            self.packages["tool-dfuutil"]["optional"] = False
+
+        return PlatformBase.configure_default_packages(self, variables, targets)
 
     def get_boards(self, id_=None):
         result = PlatformBase.get_boards(self, id_)

@@ -38,6 +38,12 @@
         "tool-openocd-at32": {
             "type": "uploader",
             "version": "https://github.com/amoxu/tool-openocd-at32.git"
+        },
+        "tool-dfuutil": {
+            "type": "uploader",
+            "optional": true,
+            "owner": "platformio",
+            "version": "~1.11.0"
         }
     }
 }
