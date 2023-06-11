@@ -48,6 +48,12 @@ env.Append(
     ]
 )
 
+env.Append(
+    CPPDEFINES=[
+        env["BUILD_TYPE"].upper()
+    ]
+)
+
 if not board.get("build.ldscript", ""):
     env.Replace(LDSCRIPT_PATH=get_linker_script())
 
