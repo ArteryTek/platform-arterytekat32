@@ -81,35 +81,36 @@ libs.append(env.BuildLibrary(
     src_filter=["+<*.c>"]
 ))
 
-middlewares = env.GetProjectOption("middlewares")
-for x in middlewares.split(","):
-    print("Middleware %s referenced." % x)
-    if x == "i2c_application_library" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())): 
-        env.Append(
-            CPPPATH=[
-                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())
-            ]
-        )
-        libs.append(env.BuildLibrary(
-            join("$BUILD_DIR", "middleware", x.strip()),
-            join(FRAMEWORK_MIDDLEWARE_DIR, x.strip()),
-            src_filter=["+<*.c>"]
-        ))
-    if x == "freertos" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())):
-        env.Append(
-            CPPPATH=[
-                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "include"),
-                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", "ARM_CM3")
-            ]
-        )
-        libs.append(env.BuildLibrary(
-            join("$BUILD_DIR", "middleware", x.strip()),
-            join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
-            src_filter=[
-                "+<*.c>",
-                "+<portable/common/*.c>",
-                "+<portable/gcc/ARM_CM3/*.c>"
-            ]
-        ))
+middlewares = env.GetProjectOption("middlewares","")
+if(middlewares):
+    for x in middlewares.split(","):
+        print("Middleware %s referenced." % x)
+        if x == "i2c_application_library" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())): 
+            env.Append(
+                CPPPATH=[
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())
+                ]
+            )
+            libs.append(env.BuildLibrary(
+                join("$BUILD_DIR", "middleware", x.strip()),
+                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip()),
+                src_filter=["+<*.c>"]
+            ))
+        if x == "freertos" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())):
+            env.Append(
+                CPPPATH=[
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "include"),
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", "ARM_CM3")
+                ]
+            )
+            libs.append(env.BuildLibrary(
+                join("$BUILD_DIR", "middleware", x.strip()),
+                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
+                src_filter=[
+                    "+<*.c>",
+                    "+<portable/common/*.c>",
+                    "+<portable/gcc/ARM_CM3/*.c>"
+                ]
+            ))
 
 env.Append(LIBS=libs)
