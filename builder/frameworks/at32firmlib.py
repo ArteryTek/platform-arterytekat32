@@ -1,5 +1,5 @@
 import sys
-from os.path import isdir, isfile, join
+from os.path import exists,isdir, isfile, join
 from string import Template
 
 from SCons.Script import DefaultEnvironment
@@ -30,7 +30,7 @@ def get_linker_script():
     if isfile(ldscript):
         return ldscript
 
-    print("Warning! Cannot find a linker script for the required board! "+ldscript)
+    sys.stderr.write("Warning! Cannot find a linker script for the required board! "+ldscript)
 
 
 env.Append(
@@ -85,32 +85,35 @@ middlewares = env.GetProjectOption("middlewares","")
 if(middlewares):
     for x in middlewares.split(","):
         print("Middleware %s referenced." % x)
-        if x == "i2c_application_library" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())): 
-            env.Append(
-                CPPPATH=[
-                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())
-                ]
-            )
-            libs.append(env.BuildLibrary(
-                join("$BUILD_DIR", "middleware", x.strip()),
-                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip()),
-                src_filter=["+<*.c>"]
-            ))
-        if x == "freertos" and isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())):
-            env.Append(
-                CPPPATH=[
-                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "include"),
-                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", "ARM_CM3")
-                ]
-            )
-            libs.append(env.BuildLibrary(
-                join("$BUILD_DIR", "middleware", x.strip()),
-                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
-                src_filter=[
-                    "+<*.c>",
-                    "+<portable/common/*.c>",
-                    "+<portable/gcc/ARM_CM3/*.c>"
-                ]
-            ))
+        if isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())) and exists(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())):
+            if x == "i2c_application_library": 
+                env.Append(
+                    CPPPATH=[
+                        join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())
+                    ]
+                )
+                libs.append(env.BuildLibrary(
+                    join("$BUILD_DIR", "middleware", x.strip()),
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip()),
+                    src_filter=["+<*.c>"]
+                ))
+            if x == "freertos":
+                env.Append(
+                    CPPPATH=[
+                        join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "include"),
+                        join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", "ARM_CM3")
+                    ]
+                )
+                libs.append(env.BuildLibrary(
+                    join("$BUILD_DIR", "middleware", x.strip()),
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
+                    src_filter=[
+                        "+<*.c>",
+                        "+<portable/common/*.c>",
+                        "+<portable/gcc/ARM_CM3/*.c>"
+                    ]
+                ))
+        else:
+            sys.stderr.write("Middleware %s not exist.\r\n" % x)
 
 env.Append(LIBS=libs)
