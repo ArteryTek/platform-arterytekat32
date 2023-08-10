@@ -97,7 +97,7 @@ else:
 AlwaysBuild(env.Alias("nobuild", target_firm))
 target_buildprog = env.Alias("buildprog", target_firm, target_firm)
 target_buildhex = env.Alias("buildhex", target_hex, target_hex)
-target_buildhex = env.Alias("disassembling", target_asm, target_asm)
+target_buildasm = env.Alias("disassembling", target_asm, target_asm)
 
 #
 # Target: Export Symbols
