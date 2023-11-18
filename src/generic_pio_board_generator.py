@@ -3,6 +3,7 @@
 
 import csv
 import os
+import re
 from collections import defaultdict
 from string import Template
 
@@ -10,11 +11,13 @@ rows = defaultdict(list)
 dirname = os.path.dirname(__file__)
 
 bspDict = {
+    'AT32F402_405': ['AT32F402', 'AT32F405'],
     'AT32F403': ['AT32F403'],
     'AT32F403A_407': ['AT32F403A', 'AT32F407'],
     'AT32F413': ['AT32F413'],
     'AT32F415': ['AT32F415'],
     'AT32F421': ['AT32F421'],
+    'AT32F423': ['AT32F423'],
     'AT32F425': ['AT32F425'],
     'AT32F435_437': ['AT32F435', 'AT32F437'],
     'AT32WB415': ['AT32WB415']
@@ -40,13 +43,34 @@ with open(os.path.join(dirname, 'board.tpl.json'), "r") as template_file:
 with open(os.path.join(dirname, 'at32.csv')) as f:
     reader = csv.DictReader(f, delimiter=',')
     for item in reader:
+        # when SRAM is by '96/224' format, means ram can be configured to 96K or 224K,
+        # when SRAM is by '96+6' format, means ram can be configured to 96K or 102K,
+        # we need to list all possible ram size for sram_options,
+        # and use the max size for sram_size
+
+
+        sram_sizes = item['SRAM'].split('/')
+        possible_sram_sizes = []
+        sram_options = []
+        for size in sram_sizes:
+            if '+' in size:
+                min_size, extra_size = size.split('+')
+                sram_options.append(min_size + 'K')
+                sram_options.append(str(int(min_size) + int(extra_size)) + 'K')
+
+                possible_sram_sizes.append(min_size)
+                possible_sram_sizes.append(str(int(min_size) + int(extra_size)))
+            else:
+                sram_options.append(size + 'K')
+                possible_sram_sizes.append(size)
+        item['sram_options'] = '/'.join(sram_options)
+        item['sram_size'] = max([int(size) for size in possible_sram_sizes]) * 1024
+        
+
         item['SKU'] = item['SKU']
         item['variant'] = item['SKU'].replace('-','_')
         item['f_cpu'] = int(item['Speed']) * 1000000
         item['flash_size'] = int(item['Flash'])*1024
-        item['sram_options'] = '/'.join(map(lambda x: x +
-                                        'K', item['SRAM'].split('/')))
-        item['sram_size'] = int(item['SRAM'].split('/')[0])*1024
         item['ocd_target'] = get_ocd_target(item['Product'], item["SKU"])
         item['product_flash_series'] = item['Product'] + \
             'x' + item['SKU'].replace(item['Product'], '')[1]
