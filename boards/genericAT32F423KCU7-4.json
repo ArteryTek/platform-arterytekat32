@@ -1,0 +1,33 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m4",
+    "f_cpu": "150000000L",
+    "mcu": "AT32F423KCU7-4",
+    "product_line": "AT32F423xC",
+    "bsp": "AT32F423",
+    "variant": "AT32F423KCU7_4"
+  },
+  "debug": {
+    "openocd_target": "at32f423xx",
+    "svd_path": "AT32F423xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "AT32F423KCU7-4 (48K RAM. 256K Flash)",
+  "upload": {
+    "maximum_ram_size": 49152,
+    "maximum_size": 262144,
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2",
+      "jlink",
+      "stlink"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/AT32F423.jsp",
+  "vendor": "Generic"
+}

@@ -1,0 +1,33 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m4",
+    "f_cpu": "216000000L",
+    "mcu": "AT32F402CBU7",
+    "product_line": "AT32F402xB",
+    "bsp": "AT32F402_405",
+    "variant": "AT32F402CBU7"
+  },
+  "debug": {
+    "openocd_target": "at32f402xx",
+    "svd_path": "AT32F402xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "AT32F402CBU7 (64K/70K RAM. 128K Flash)",
+  "upload": {
+    "maximum_ram_size": 71680,
+    "maximum_size": 131072,
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2",
+      "jlink",
+      "stlink"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/AT32F402.jsp",
+  "vendor": "Generic"
+}

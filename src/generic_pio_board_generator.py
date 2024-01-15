@@ -11,6 +11,7 @@ rows = defaultdict(list)
 dirname = os.path.dirname(__file__)
 
 bspDict = {
+    'AT32A403A': ['AT32A403A'],
     'AT32F402_405': ['AT32F402', 'AT32F405'],
     'AT32F403': ['AT32F403'],
     'AT32F403A_407': ['AT32F403A', 'AT32F407'],
