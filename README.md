@@ -4,5 +4,5 @@
 1. Click "PlatformIO Core CLI" from VSCode PlatformIO Panel -> Quick Access -> Miscellaneous.
 2. Enter below install commands:
 ``` 
-pio pkg install -g -p https://github.com/ArteryTek/platform-arterytekat32/releases/download/v1.0.2/pio-at32-1.0.2.tar.gz
+pio pkg install -g -p https://github.com/ArteryTek/platform-arterytekat32
 ```
