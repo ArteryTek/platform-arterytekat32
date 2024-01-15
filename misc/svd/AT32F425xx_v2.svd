@@ -9455,19 +9455,6 @@
               <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>TWCMSEL</name>
-              <description>Two-way count mode
-              selection</description>
-              <bitOffset>5</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>OWCDIR</name>
-              <description>One-way count direction</description>
-              <bitOffset>4</bitOffset>
-              <bitWidth>1</bitWidth>
-            </field>
-            <field>
               <name>OCMEN</name>
               <description>One cycle mode enable</description>
               <bitOffset>3</bitOffset>
@@ -19414,7 +19401,7 @@
           <fields>
             <field>
               <name>DBN1</name>
-              <description>high bit for Data bit num</description>
+              <description>high bit for data bit num</description>
               <bitOffset>28</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -19438,7 +19425,7 @@
             </field>
             <field>
               <name>DBN0</name>
-              <description>Data bit num</description>
+              <description>low bit for data bit num</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -19526,7 +19513,7 @@
           <resetValue>0x0000</resetValue>
           <fields>
             <field>
-              <name>ID7_4</name>
+              <name>IDH</name>
               <description>bit 7-4 for usart identification</description>
               <bitOffset>28</bitOffset>
               <bitWidth>4</bitWidth>
@@ -19586,8 +19573,14 @@
               <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>ID</name>
-              <description>USART identification</description>
+              <name>IDBN</name>
+              <description>Identification bit num</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IDL</name>
+              <description>bit 7-4 for usart identification</description>
               <bitOffset>0</bitOffset>
               <bitWidth>4</bitWidth>
             </field>
@@ -19720,14 +19713,19 @@
       <name>USART3</name>
       <baseAddress>0x40004800</baseAddress>
       <interrupt>
-        <name>USART3</name>
+        <name>USART4_3</name>
         <description>USART4_3 global interrupt</description>
         <value>29</value>
       </interrupt>
     </peripheral>
-    <peripheral derivedFrom="USART1">
+	<peripheral derivedFrom="USART1">
       <name>USART4</name>
       <baseAddress>0x40004C00</baseAddress>
+      <interrupt>
+        <name>USART4_3</name>
+        <description>USART4_3 global interrupt</description>
+        <value>29</value>
+      </interrupt>
     </peripheral>
     <peripheral>
       <name>ADC</name>
@@ -20895,6 +20893,29 @@
             </field>
           </fields>
         </register>
+        <register>
+          <name>SER_ID</name>
+          <displayName>SER_ID</displayName>
+          <description>SERIES ID</description>
+          <addressOffset>0x20</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x0</resetValue>
+          <fields>
+            <field>
+              <name>REV_ID</name>
+              <description>version ID</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>SER_ID</name>
+              <description>series ID</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>
@@ -20958,6 +20979,12 @@
               <bitWidth>1</bitWidth>
             </field>
             <field>
+              <name>POLY_SIZE</name>
+              <description>Polynomial size</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
               <name>REVID</name>
               <description>Reverse input data</description>
               <bitOffset>5</bitOffset>
@@ -20983,6 +21010,23 @@
             <field>
               <name>IDT</name>
               <description>Initial Data</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>POLY</name>
+          <displayName>POLY</displayName>
+          <description>Polynomial coefficient register</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x04C11DB7</resetValue>
+          <fields>
+            <field>
+              <name>POLY</name>
+              <description>polynomial coefficient</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
             </field>
@@ -21019,13 +21063,6 @@
               <description>Wait cycle</description>
               <bitOffset>0</bitOffset>
               <bitWidth>3</bitWidth>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>HFCYC_EN</name>
-              <description>Half cycle acceleration access enable</description>
-              <bitOffset>3</bitOffset>
-              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
             <field>

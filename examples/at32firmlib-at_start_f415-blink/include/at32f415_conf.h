@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f415_conf.h
-  * @version  v2.0.6
-  * @date     2022-06-28
   * @brief    at32f415 config header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -41,21 +39,22 @@ extern "C" {
   */
 
 /**
-  * @brief in the following line adjust the value of high speed exernal crystal (hext)
+  * @brief in the following line adjust the value of high speed external crystal (hext)
   * used in your application
   * tip: to avoid modifying this file each time you need to use different hext, you
   *      can define the hext value in your toolchain compiler preprocessor.
   */
 #if !defined  HEXT_VALUE
-#define HEXT_VALUE               ((uint32_t)8000000) /*!< value of the high speed exernal crystal in hz */
+#define HEXT_VALUE               ((uint32_t)8000000) /*!< value of the high speed external crystal in hz */
 #endif
 
 /**
-  * @brief in the following line adjust the high speed exernal crystal (hext) startup
+  * @brief in the following line adjust the high speed external crystal (hext) startup
   * timeout value
   */
-#define HEXT_STARTUP_TIMEOUT     ((uint16_t)0x3000) /*!< time out for hext start up */
-#define HICK_VALUE               ((uint32_t)8000000) /*!< value of the high speed internal clock in hz */
+#define HEXT_STARTUP_TIMEOUT             ((uint16_t)0x3000)  /*!< time out for hext start up */
+#define HICK_VALUE                       ((uint32_t)8000000) /*!< value of the high speed internal clock in hz */
+#define LEXT_VALUE                       ((uint32_t)32768)   /*!< value of the low speed external clock in hz */
 
 /* module define -------------------------------------------------------------*/
 #define CRM_MODULE_ENABLED

@@ -17,7 +17,7 @@
   ],
   "name": "AT32F407RGT7 (96K/224K RAM. 1024K Flash)",
   "upload": {
-    "maximum_ram_size": 98304,
+    "maximum_ram_size": 229376,
     "maximum_size": 1048576,
     "protocol": "atlink",
     "protocols": [

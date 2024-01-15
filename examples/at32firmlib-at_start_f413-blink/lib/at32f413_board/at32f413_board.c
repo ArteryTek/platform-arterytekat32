@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f413_board.c
-  * @version  v2.0.6
-  * @date     2022-06-28
   * @brief    set of firmware functions to manage leds and push-button.
   *           initialize delay function.
   **************************************************************************
@@ -24,7 +22,6 @@
   *
   **************************************************************************
   */
-
 #include "at32f413_board.h"
 
 /** @addtogroup AT32F413_board
@@ -86,7 +83,7 @@ static __IO uint32_t fac_ms;
 #else
   #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
 #endif
-
+  
 /**
   * @brief  retargets the c library printf function to the usart.
   * @param  none
@@ -95,9 +92,29 @@ static __IO uint32_t fac_ms;
 PUTCHAR_PROTOTYPE
 {
   while(usart_flag_get(PRINT_UART, USART_TDBE_FLAG) == RESET);
-  usart_data_transmit(PRINT_UART, ch);
+  usart_data_transmit(PRINT_UART, (uint16_t)ch);
+  while(usart_flag_get(PRINT_UART, USART_TDC_FLAG) == RESET);
   return ch;
 }
+
+#if (defined (__GNUC__) && !defined (__clang__)) || (defined (__ICCARM__))
+#if defined (__GNUC__) && !defined (__clang__)
+int _write(int fd, char *pbuffer, int size)
+#elif defined ( __ICCARM__ )
+#pragma module_name = "?__write"
+int __write(int fd, char *pbuffer, int size)
+#endif
+{
+  for(int i = 0; i < size; i ++)
+  {
+    while(usart_flag_get(PRINT_UART, USART_TDBE_FLAG) == RESET);
+    usart_data_transmit(PRINT_UART, (uint16_t)(*pbuffer++));
+    while(usart_flag_get(PRINT_UART, USART_TDC_FLAG) == RESET);
+  }
+
+  return size;
+}
+#endif
 
 /**
   * @brief  initialize uart
@@ -107,6 +124,10 @@ PUTCHAR_PROTOTYPE
 void uart_print_init(uint32_t baudrate)
 {
   gpio_init_type gpio_init_struct;
+
+#if defined (__GNUC__) && !defined (__clang__)
+  setvbuf(stdout, NULL, _IONBF, 0);
+#endif
 
   /* enable the uart and gpio clock */
   crm_periph_clock_enable(PRINT_UART_CRM_CLK, TRUE);

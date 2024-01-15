@@ -17,7 +17,7 @@
   ],
   "name": "AT32F413KBU7-4 (32K/16K/64K RAM. 128K Flash)",
   "upload": {
-    "maximum_ram_size": 32768,
+    "maximum_ram_size": 65536,
     "maximum_size": 131072,
     "protocol": "atlink",
     "protocols": [

@@ -36572,6 +36572,12 @@
               <bitWidth>1</bitWidth>
             </field>
             <field>
+              <name>POLY_SIZE</name>
+              <description>Polynomial size</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
               <name>REVID</name>
               <description>Reverse input data</description>
               <bitOffset>5</bitOffset>
@@ -36597,6 +36603,23 @@
             <field>
               <name>IDT</name>
               <description>Initial Data</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>POLY</name>
+          <displayName>POLY</displayName>
+          <description>Polynomial coefficient register</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x04C11DB7</resetValue>
+          <fields>
+            <field>
+              <name>POLY</name>
+              <description>polynomial coefficient</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
             </field>
@@ -56094,23 +56117,6 @@
           </fields>
         </register>
         <register>
-          <name>ACTR</name>
-          <displayName>ACTR</displayName>
-          <description>AC timing control register</description>
-          <addressOffset>0x14</addressOffset>
-          <size>0x20</size>
-          <access>read-write</access>
-          <resetValue>0x0000000F</resetValue>
-          <fields>
-            <field>
-              <name>CSDLY</name>
-              <description>CS delay</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>4</bitWidth>
-            </field>
-          </fields>
-        </register>
-        <register>
           <name>FIFOSTS</name>
           <displayName>FIFOSTS</displayName>
           <description>FIFO Status register</description>
@@ -56302,7 +56308,7 @@
               <name>XIPR_DCNT</name>
               <description>XIP read data counter</description>
               <bitOffset>0</bitOffset>
-              <bitWidth>6</bitWidth>
+              <bitWidth>5</bitWidth>
             </field>
             <field>
               <name>XIPR_TCNT</name>
@@ -56320,7 +56326,7 @@
               <name>XIPW_DCNT</name>
               <description>XIP write data counter</description>
               <bitOffset>16</bitOffset>
-              <bitWidth>6</bitWidth>
+              <bitWidth>5</bitWidth>
             </field>
             <field>
               <name>XIPW_TCNT</name>

@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f403_clock.c
-  * @version  v2.0.3
-  * @date     2022-06-28
   * @brief    system clock config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,7 +41,7 @@
   */
 static void wait_stbl(uint32_t delay)
 {
-  uint32_t i;
+  volatile uint32_t i;
 
   for(i = 0; i < delay; i++);
 }
@@ -51,9 +49,9 @@ static void wait_stbl(uint32_t delay)
 /**
   * @brief  system clock config program
   * @note   the system clock is configured as follow:
-  *         - system clock        = hext / 2 * pll_mult
-  *         - system clock source = pll (hext)
-  *         - hext                = 8000000
+  *         system clock (sclk)   = hext / 2 * pll_mult
+  *         system clock source   = pll (hext)
+  *         - hext                = HEXT_VALUE
   *         - sclk                = 192000000
   *         - ahbdiv              = 1
   *         - ahbclk              = 192000000
@@ -92,10 +90,10 @@ void system_clock_config(void)
   {
   }
 
-  /* config apb2clk */
+  /* config apb2clk, the maximum frequency of APB1/APB2 clock is 100 MHz  */
   crm_apb2_div_set(CRM_APB2_DIV_2);
 
-  /* config apb1clk */
+  /* config apb1clk, the maximum frequency of APB1/APB2 clock is 100 MHz  */
   crm_apb1_div_set(CRM_APB1_DIV_2);
 
   /* 1step: config ahbclk div8 */

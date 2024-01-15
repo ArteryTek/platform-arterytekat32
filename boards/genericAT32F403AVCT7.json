@@ -17,7 +17,7 @@
   ],
   "name": "AT32F403AVCT7 (96K/224K RAM. 256K Flash)",
   "upload": {
-    "maximum_ram_size": 98304,
+    "maximum_ram_size": 229376,
     "maximum_size": 262144,
     "protocol": "atlink",
     "protocols": [

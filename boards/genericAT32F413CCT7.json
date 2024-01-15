@@ -17,7 +17,7 @@
   ],
   "name": "AT32F413CCT7 (32K/16K/64K RAM. 256K Flash)",
   "upload": {
-    "maximum_ram_size": 32768,
+    "maximum_ram_size": 65536,
     "maximum_size": 262144,
     "protocol": "atlink",
     "protocols": [

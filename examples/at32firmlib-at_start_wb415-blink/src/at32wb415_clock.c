@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32wb415_clock.c
-  * @version  v2.0.2
-  * @date     2022-06-28
   * @brief    system clock config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -38,9 +36,9 @@
 /**
   * @brief  system clock config program
   * @note   the system clock is configured as follow:
-  *         - system clock        = hick / 2 * pll_mult
-  *         - system clock source = pll (hick)
-  *         - hick                = 8000000
+  *         system clock (sclk)   = hick / 2 * pll_mult
+  *         system clock source   = pll (hick)
+  *         - hick                = HICK_VALUE
   *         - sclk                = 144000000
   *         - ahbdiv              = 1
   *         - ahbclk              = 144000000
@@ -55,11 +53,11 @@
   */
 void system_clock_config(void)
 {
-  /* config flash psr register */
-  flash_psr_set(FLASH_WAIT_CYCLE_4);
-
   /* reset crm */
   crm_reset();
+
+  /* config flash psr register */
+  flash_psr_set(FLASH_WAIT_CYCLE_4);
 
   crm_clock_source_enable(CRM_CLOCK_SOURCE_HICK, TRUE);
 
@@ -82,10 +80,10 @@ void system_clock_config(void)
   /* config ahbclk */
   crm_ahb_div_set(CRM_AHB_DIV_1);
 
-  /* config apb2clk */
+  /* config apb2clk, the maximum frequency of APB1/APB2 clock is 75 MHz  */
   crm_apb2_div_set(CRM_APB2_DIV_2);
 
-  /* config apb1clk */
+  /* config apb1clk, the maximum frequency of APB1/APB2 clock is 75 MHz  */
   crm_apb1_div_set(CRM_APB1_DIV_2);
 
   /* enable auto step mode */
