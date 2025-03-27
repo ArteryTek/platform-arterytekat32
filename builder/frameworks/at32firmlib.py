@@ -20,7 +20,7 @@ FRAMEWORK_LIB_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries")
 assert isdir(FRAMEWORK_LIB_DIR)
 
 FRAMEWORK_MIDDLEWARE_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "middlewares")
-
+env.Append(FMD=[FRAMEWORK_MIDDLEWARE_DIR])
 
 
 def get_linker_script():
@@ -112,6 +112,17 @@ if(middlewares):
                         "+<portable/common/*.c>",
                         "+<portable/gcc/ARM_CM3/*.c>"
                     ]
+                ))
+            if x == "usbd_drivers":
+                env.Append(
+                    CPPPATH=[
+                        join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "inc")
+                    ]
+                )
+                libs.append(env.BuildLibrary(
+                    join("$BUILD_DIR", "middleware", x.strip()),
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(),"src"),
+                    src_filter=["+<*.c>"]
                 ))
         else:
             sys.stderr.write("Middleware %s not exist.\r\n" % x)
