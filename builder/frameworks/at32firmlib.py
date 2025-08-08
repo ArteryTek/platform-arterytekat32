@@ -13,13 +13,13 @@ bsp = board.get("build.bsp", "")
 
 env.SConscript("_bare.py")
 
-FRAMEWORK_DIR = platform.get_package_dir("framework-at32firmlib")
+FRAMEWORK_DIR = platform.get_package_dir("framework-%s-firmlib" % (bsp.lower()))
 assert isdir(FRAMEWORK_DIR)
 
-FRAMEWORK_LIB_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries")
+FRAMEWORK_LIB_DIR = join(FRAMEWORK_DIR, "libraries")
 assert isdir(FRAMEWORK_LIB_DIR)
 
-FRAMEWORK_MIDDLEWARE_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "middlewares")
+FRAMEWORK_MIDDLEWARE_DIR = join(FRAMEWORK_DIR, "middlewares")
 env.Append(FMD=[FRAMEWORK_MIDDLEWARE_DIR])
 
 

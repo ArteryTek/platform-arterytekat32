@@ -26,6 +26,13 @@ class Arterytekat32Platform(PlatformBase):
     def configure_default_packages(self, variables, targets):
         board = variables.get("board")
         board_config = self.board_config(board)
+        board_bsp = board_config.get("build.bsp", "")
+
+        frameworks = variables.get("pioframework", [])
+        if "at32firmlib" in frameworks:
+            assert board_bsp, ("Missing BSP field for %s" % board)
+            bsp_package = "framework-%s-firmlib" % (board_bsp.lower())
+            self.frameworks["at32firmlib"]["package"] = bsp_package
 
         default_protocol = board_config.get("upload.protocol") or ""
         if variables.get("upload_protocol", default_protocol) == "dfu":

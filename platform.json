@@ -4,15 +4,10 @@
     "description": "Artery Technology Company, specializing in ARM® Cortex®-M4 MCU, is committed to take the lead in the 32-bit MCU industry with the support of high-end R&D technology, comprehensive silicon IP and professional integration experience.",
     "homepage": "https://www.arterychip.com/",
     "license": "Apache-2.0",
-    "keywords": [
-        "ARM",
-        "Cortex-M4",
-        "ArteryTek",
-        "AT32"
-    ],
+    "keywords": ["ARM", "Cortex-M4", "ArteryTek", "AT32"],
     "repository": {
-      "type": "git",
-      "url": "https://github.com/ArteryTek/platform-arterytekat32.git"
+        "type": "git",
+        "url": "https://github.com/ArteryTek/platform-arterytekat32.git"
     },
     "engines": {
         "platformio": "^5"
@@ -31,9 +26,60 @@
             "owner": "platformio",
             "version": ">=1.60301.0,<1.80000.0"
         },
-        "framework-at32firmlib": {
+        "framework-at32a403a-firmlib": {
             "type": "framework",
-            "version": "https://github.com/ArteryTek/framework-at32firmlib.git"
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32A403A_Firmware_Library.git"
+        },
+        "framework-at32f402_405-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F402_405_Firmware_Library.git"
+        },
+        "framework-at32f403a_407-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F403A_407_Firmware_Library.git"
+        },
+        "framework-at32f403-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F403_Firmware_Library.git"
+        },
+        "framework-at32f413-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F413_Firmware_Library.git"
+        },
+        "framework-at32f415-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F415_Firmware_Library.git"
+        },
+        "framework-at32f421-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F421_Firmware_Library.git"
+        },
+        "framework-at32f423-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F423_Firmware_Library.git"
+        },
+        "framework-at32f425-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F425_Firmware_Library.git"
+        },
+        "framework-at32f435_437-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32F435_437_Firmware_Library.git"
+        },
+        "framework-at32wb415-firmlib": {
+            "type": "framework",
+            "optional": true,
+            "version": "https://github.com/ArteryTek/AT32WB415_Firmware_Library.git"
         },
         "tool-openocd-at32": {
             "type": "uploader",
