@@ -84,36 +84,51 @@ libs.append(env.BuildLibrary(
 middlewares = env.GetProjectOption("middlewares","")
 if(middlewares):
     for x in middlewares.split(","):
+        x = x.strip()
         print("Middleware %s referenced." % x)
-        if isdir(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())) and exists(join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())):
-            if x == "i2c_application_library": 
+        if x == "i2c_application_library": 
+            env.Append(
+                CPPPATH=[
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())
+                ]
+            )
+            libs.append(env.BuildLibrary(
+                join("$BUILD_DIR", "middleware", x.strip()),
+                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip()),
+                src_filter=["+<*.c>"]
+            ))
+        elif x == "freertos":
+            env.Append(
+                CPPPATH=[
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "include"),
+                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", "ARM_CM3")
+                ]
+            )
+            libs.append(env.BuildLibrary(
+                join("$BUILD_DIR", "middleware", x.strip()),
+                join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
+                src_filter=[
+                    "+<*.c>",
+                    "+<portable/common/*.c>",
+                    "+<portable/gcc/ARM_CM3/*.c>",
+                    "+<portable/memmang/heap_4.c>"
+                ]
+            ))
+        elif x == "usbd_drivers":
+            print("Building USB Device Drivers for %s.\r\n" % bsp)
+            # The usbd_drivers middleware contains both device and host USB drivers, but currently only device drivers are supported in the framework. So we only build the source files under "src/device" directory.
+            if bsp in ["AT32F402_405","AT32F435_437","AT32F415","AT32F423","AT32F425","AT32WB415"]:
                 env.Append(
                     CPPPATH=[
-                        join(FRAMEWORK_MIDDLEWARE_DIR, x.strip())
+                        join(FRAMEWORK_MIDDLEWARE_DIR, "usb_drivers", "inc")
                     ]
                 )
                 libs.append(env.BuildLibrary(
-                    join("$BUILD_DIR", "middleware", x.strip()),
-                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip()),
-                    src_filter=["+<*.c>"]
+                    join("$BUILD_DIR", "middleware", "usb_drivers"),
+                    join(FRAMEWORK_MIDDLEWARE_DIR, "usb_drivers", "src"),
+                    src_filter=["+<usb_core.c>","+<usbd_*.c>"]
                 ))
-            if x == "freertos":
-                env.Append(
-                    CPPPATH=[
-                        join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "include"),
-                        join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", "ARM_CM3")
-                    ]
-                )
-                libs.append(env.BuildLibrary(
-                    join("$BUILD_DIR", "middleware", x.strip()),
-                    join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
-                    src_filter=[
-                        "+<*.c>",
-                        "+<portable/common/*.c>",
-                        "+<portable/gcc/ARM_CM3/*.c>"
-                    ]
-                ))
-            if x == "usbd_drivers":
+            else:
                 env.Append(
                     CPPPATH=[
                         join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "inc")
@@ -124,7 +139,18 @@ if(middlewares):
                     join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(),"src"),
                     src_filter=["+<*.c>"]
                 ))
+        elif x == "usbh_drivers":
+            env.Append(
+                CPPPATH=[
+                    join(FRAMEWORK_MIDDLEWARE_DIR, "usb_drivers", "inc")
+                ]
+            )
+            libs.append(env.BuildLibrary(
+                join("$BUILD_DIR", "middleware", "usb_drivers"),
+                join(FRAMEWORK_MIDDLEWARE_DIR, "usb_drivers", "src"),
+                src_filter=["+<usb_core.c>","+<usbh_*.c>"]
+            ))
         else:
-            sys.stderr.write("Middleware %s not exist.\r\n" % x)
+            sys.stderr.write("Middleware %s not supported.\r\n" % x)
 
 env.Append(LIBS=libs)
