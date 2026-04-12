@@ -1,0 +1,33 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m0+",
+    "f_cpu": "80000000L",
+    "mcu": "AT32L021K6T7",
+    "product_line": "AT32L021x6",
+    "bsp": "AT32L021",
+    "variant": "AT32L021K6T7"
+  },
+  "debug": {
+    "openocd_target": "at32l021xx",
+    "svd_path": "AT32L021xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "AT32L021K6T7 (9K RAM. 32K Flash)",
+  "upload": {
+    "maximum_ram_size": 9216,
+    "maximum_size": 32768,
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2",
+      "jlink",
+      "stlink"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/AT32L021.jsp",
+  "vendor": "Generic"
+}
