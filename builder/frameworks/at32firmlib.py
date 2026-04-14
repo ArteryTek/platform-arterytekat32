@@ -38,8 +38,8 @@ def get_linker_script():
 
 env.Append(
     CPPPATH=[
-        join(FRAMEWORK_LIB_DIR, "cmsis", "cmsis_core_dir", "core_support"),
-        join(FRAMEWORK_LIB_DIR, "cmsis", "cmsis_core_dir", "device_support"),
+        join(FRAMEWORK_LIB_DIR, "cmsis", cmsis_core_dir, "core_support"),
+        join(FRAMEWORK_LIB_DIR, "cmsis", cmsis_core_dir, "device_support"),
         join(FRAMEWORK_LIB_DIR, "drivers", "inc"),
         join(FRAMEWORK_LIB_DIR, "drivers", "src")
     ]
@@ -71,7 +71,7 @@ libs = []
 if board.get("build.at32firmlib.custom_system_setup", "no") == "no":
     libs.append(env.BuildLibrary(
         join("$BUILD_DIR", "cmsis"),
-        join(FRAMEWORK_LIB_DIR, "cmsis", "cmsis_core_dir", "device_support"),
+        join(FRAMEWORK_LIB_DIR, "cmsis", cmsis_core_dir, "device_support"),
         src_filter=[
             "+<*.c>",
             "+<startup/gcc/startup_%s.S>" % bsp.lower()
