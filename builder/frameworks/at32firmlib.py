@@ -1,5 +1,5 @@
 import sys
-from os.path import exists,isdir, isfile, join
+from os.path import exists, isdir, isfile, join
 from string import Template
 
 from SCons.Script import DefaultEnvironment
@@ -11,20 +11,23 @@ mcu = board.get("build.mcu", "")
 product_line = board.get("build.product_line", "")
 bsp = board.get("build.bsp", "")
 
+cpu_type = board.get("build.cpu", "cortex-m4")
+cmsis_core_dir = "cm0plus" if cpu_type == "cortex-m0+" else "cm4"
+
 env.SConscript("_bare.py")
 
 FRAMEWORK_DIR = platform.get_package_dir("framework-at32firmlib")
 assert isdir(FRAMEWORK_DIR)
 
 FRAMEWORK_LIB_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "libraries")
-assert isdir(FRAMEWORK_LIB_DIR)
+assert isdir(FRAMEWORK_LIB_DIR), "Cannot find %s" % FRAMEWORK_LIB_DIR
 
 FRAMEWORK_MIDDLEWARE_DIR = join(FRAMEWORK_DIR, bsp + "_Firmware_Library", "middlewares")
 env.Append(FMD=[FRAMEWORK_MIDDLEWARE_DIR])
 
 
 def get_linker_script():
-    ldscript = join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "device_support", "startup", "gcc",
+    ldscript = join(FRAMEWORK_LIB_DIR, "cmsis", cmsis_core_dir, "device_support", "startup", "gcc",
                     "linker", product_line + "_FLASH.ld")
 
     if isfile(ldscript):
@@ -35,8 +38,8 @@ def get_linker_script():
 
 env.Append(
     CPPPATH=[
-        join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "core_support"),
-        join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "device_support"),
+        join(FRAMEWORK_LIB_DIR, "cmsis", "cmsis_core_dir", "core_support"),
+        join(FRAMEWORK_LIB_DIR, "cmsis", "cmsis_core_dir", "device_support"),
         join(FRAMEWORK_LIB_DIR, "drivers", "inc"),
         join(FRAMEWORK_LIB_DIR, "drivers", "src")
     ]
@@ -68,7 +71,7 @@ libs = []
 if board.get("build.at32firmlib.custom_system_setup", "no") == "no":
     libs.append(env.BuildLibrary(
         join("$BUILD_DIR", "cmsis"),
-        join(FRAMEWORK_LIB_DIR, "cmsis", "cm4", "device_support"),
+        join(FRAMEWORK_LIB_DIR, "cmsis", "cmsis_core_dir", "device_support"),
         src_filter=[
             "+<*.c>",
             "+<startup/gcc/startup_%s.S>" % bsp.lower()
