@@ -1,0 +1,33 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m4",
+    "f_cpu": "180000000L",
+    "mcu": "AT32F422K8U7-4",
+    "product_line": "AT32F422x8",
+    "bsp": "AT32F422_426",
+    "variant": "AT32F422K8U7_4"
+  },
+  "debug": {
+    "openocd_target": "at32f422xx",
+    "svd_path": "AT32F422xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "AT32F422K8U7-4 (20K RAM. 64K Flash)",
+  "upload": {
+    "maximum_ram_size": 20480,
+    "maximum_size": 65536,
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2",
+      "jlink",
+      "stlink"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/AT32F422.jsp",
+  "vendor": "Generic"
+}

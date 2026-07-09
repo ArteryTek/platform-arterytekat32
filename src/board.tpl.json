@@ -1,7 +1,7 @@
 {
   "build": {
     "core": "ArteryTek AT32",
-    "cpu": "cortex-m4",
+    "cpu": "${cpu_type}",
     "f_cpu": "${f_cpu}L",
     "mcu": "${SKU}",
     "product_line": "${product_flash_series}",

@@ -15,7 +15,7 @@
   "frameworks": [
     "at32firmlib"
   ],
-  "name": "AT32L021K8U7 (9K RAM. 64K Flash)",
+  "name": "AT32L021K8U7 (8K/9K RAM. 64K Flash)",
   "upload": {
     "maximum_ram_size": 9216,
     "maximum_size": 65536,

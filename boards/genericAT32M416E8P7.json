@@ -1,0 +1,33 @@
+{
+  "build": {
+    "core": "ArteryTek AT32",
+    "cpu": "cortex-m4",
+    "f_cpu": "180000000L",
+    "mcu": "AT32M416E8P7",
+    "product_line": "AT32M416x8",
+    "bsp": "AT32M412_416",
+    "variant": "AT32M416E8P7"
+  },
+  "debug": {
+    "openocd_target": "at32m416xx",
+    "svd_path": "AT32M416xx_v2.svd"
+  },
+  "frameworks": [
+    "at32firmlib"
+  ],
+  "name": "AT32M416E8P7 (16K RAM. 64K Flash)",
+  "upload": {
+    "maximum_ram_size": 16384,
+    "maximum_size": 65536,
+    "protocol": "atlink",
+    "protocols": [
+      "cmsis-dap",
+      "atlink",
+      "atlink_dap_v2",
+      "jlink",
+      "stlink"
+    ]
+  },
+  "url": "https://www.arterychip.com/en/product/AT32M416.jsp",
+  "vendor": "Generic"
+}
