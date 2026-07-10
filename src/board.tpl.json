@@ -6,7 +6,8 @@
     "mcu": "${SKU}",
     "product_line": "${product_flash_series}",
     "bsp": "${bsp}",
-    "variant": "${variant}"
+    "variant": "${variant}",
+    "fpu": "${fpu}"
   },
   "debug": {
     "openocd_target": "${ocd_target}",

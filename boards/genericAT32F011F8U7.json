@@ -6,7 +6,8 @@
     "mcu": "AT32F011F8U7",
     "product_line": "AT32F011x8",
     "bsp": "AT32F011",
-    "variant": "AT32F011F8U7"
+    "variant": "AT32F011F8U7",
+    "fpu": "No"
   },
   "debug": {
     "openocd_target": "at32f011xx",

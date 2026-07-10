@@ -6,7 +6,8 @@
     "mcu": "AT32F405KCU7-4",
     "product_line": "AT32F405xC",
     "bsp": "AT32F402_405",
-    "variant": "AT32F405KCU7_4"
+    "variant": "AT32F405KCU7_4",
+    "fpu": "Yes"
   },
   "debug": {
     "openocd_target": "at32f405xx",

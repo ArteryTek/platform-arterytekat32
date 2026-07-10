@@ -6,7 +6,8 @@
     "mcu": "AT32F457RCT7",
     "product_line": "AT32F457xC",
     "bsp": "AT32F45x",
-    "variant": "AT32F457RCT7"
+    "variant": "AT32F457RCT7",
+    "fpu": "Yes"
   },
   "debug": {
     "openocd_target": "at32f457xx",

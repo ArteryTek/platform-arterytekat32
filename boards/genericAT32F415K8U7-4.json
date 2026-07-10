@@ -6,7 +6,8 @@
     "mcu": "AT32F415K8U7-4",
     "product_line": "AT32F415x8",
     "bsp": "AT32F415",
-    "variant": "AT32F415K8U7_4"
+    "variant": "AT32F415K8U7_4",
+    "fpu": "No"
   },
   "debug": {
     "openocd_target": "at32f415xx",

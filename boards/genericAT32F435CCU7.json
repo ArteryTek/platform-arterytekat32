@@ -6,7 +6,8 @@
     "mcu": "AT32F435CCU7",
     "product_line": "AT32F435xC",
     "bsp": "AT32F435_437",
-    "variant": "AT32F435CCU7"
+    "variant": "AT32F435CCU7",
+    "fpu": "Yes"
   },
   "debug": {
     "openocd_target": "at32f435xx",

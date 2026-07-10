@@ -12,17 +12,23 @@ dirname = os.path.dirname(__file__)
 
 bspDict = {
     'AT32A403A': ['AT32A403A'],
+    'AT32A423': ['AT32A423'],
+    'AT32F011': ['AT32F011'],
     'AT32F402_405': ['AT32F402', 'AT32F405'],
     'AT32F403': ['AT32F403'],
     'AT32F403A_407': ['AT32F403A', 'AT32F407'],
     'AT32F413': ['AT32F413'],
     'AT32F415': ['AT32F415'],
     'AT32F421': ['AT32F421'],
+    'AT32F422_426': ['AT32F422', 'AT32F426'],
     'AT32F423': ['AT32F423'],
     'AT32F425': ['AT32F425'],
     'AT32F435_437': ['AT32F435', 'AT32F437'],
-    'AT32WB415': ['AT32WB415'],
-    'AT32L021': ['AT32L021']
+    'AT32F45x': ['AT32F455', 'AT32F456', 'AT32F457'],
+    'AT32F490': ['AT32F490'],
+    'AT32L021': ['AT32L021'],
+    'AT32M412_416': ['AT32M412', 'AT32M416'],
+    'AT32WB415': ['AT32WB415']
 }
 
 
@@ -71,6 +77,8 @@ with open(os.path.join(dirname, 'at32.csv')) as f:
 
         item['SKU'] = item['SKU']
         item['variant'] = item['SKU'].replace('-','_')
+        item['cpu_type'] = {'M4': 'cortex-m4', 'M0+': 'cortex-m0+'}.get(item['Core'], 'cortex-m4')
+        item['fpu'] = item['FPU']  # "Yes" or "No"
         item['f_cpu'] = int(item['Speed']) * 1000000
         item['flash_size'] = int(item['Flash'])*1024
         item['ocd_target'] = get_ocd_target(item['Product'], item["SKU"])

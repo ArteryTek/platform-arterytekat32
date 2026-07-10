@@ -6,7 +6,8 @@
     "mcu": "AT32F426C8T7",
     "product_line": "AT32F426x8",
     "bsp": "AT32F422_426",
-    "variant": "AT32F426C8T7"
+    "variant": "AT32F426C8T7",
+    "fpu": "Yes"
   },
   "debug": {
     "openocd_target": "at32f426xx",

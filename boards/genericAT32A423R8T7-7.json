@@ -6,7 +6,8 @@
     "mcu": "AT32A423R8T7-7",
     "product_line": "AT32A423x8",
     "bsp": "AT32A423",
-    "variant": "AT32A423R8T7_7"
+    "variant": "AT32A423R8T7_7",
+    "fpu": "Yes"
   },
   "debug": {
     "openocd_target": "at32a423xx",

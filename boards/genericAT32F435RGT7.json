@@ -6,7 +6,8 @@
     "mcu": "AT32F435RGT7",
     "product_line": "AT32F435xG",
     "bsp": "AT32F435_437",
-    "variant": "AT32F435RGT7"
+    "variant": "AT32F435RGT7",
+    "fpu": "Yes"
   },
   "debug": {
     "openocd_target": "at32f435xx",

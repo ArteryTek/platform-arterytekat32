@@ -6,7 +6,8 @@
     "mcu": "AT32F415CBU7",
     "product_line": "AT32F415xB",
     "bsp": "AT32F415",
-    "variant": "AT32F415CBU7"
+    "variant": "AT32F415CBU7",
+    "fpu": "No"
   },
   "debug": {
     "openocd_target": "at32f415xx",
