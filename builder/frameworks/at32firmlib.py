@@ -46,23 +46,30 @@ BSP_PACKAGE_MAP = {
 
 PACKAGE_GIT_URLS = {
     "AT32A403A_Firmware_Library": "https://github.com/ArteryTek/AT32A403A_Firmware_Library.git",
-    "AT32A423_Firmware_Library": "https://gitee.com/arterytek/AT32A423_Firmware_Library.git",
-    "AT32F011_Firmware_Library": "https://gitee.com/arterytek/AT32F011_Firmware_Library.git",
+    "AT32A423_Firmware_Library": "https://github.com/ArteryTek/AT32A423_Firmware_Library.git",
+    "AT32F011_Firmware_Library": "https://github.com/ArteryTek/AT32F011_Firmware_Library.git",
     "AT32F402_405_Firmware_Library": "https://github.com/ArteryTek/AT32F402_405_Firmware_Library.git",
     "AT32F403_Firmware_Library": "https://github.com/ArteryTek/AT32F403_Firmware_Library.git",
     "AT32F403A_407_Firmware_Library": "https://github.com/ArteryTek/AT32F403A_407_Firmware_Library.git",
     "AT32F413_Firmware_Library": "https://github.com/ArteryTek/AT32F413_Firmware_Library.git",
     "AT32F415_Firmware_Library": "https://github.com/ArteryTek/AT32F415_Firmware_Library.git",
     "AT32F421_Firmware_Library": "https://github.com/ArteryTek/AT32F421_Firmware_Library.git",
-    "AT32F422_426_Firmware_Library": "https://gitee.com/arterytek/AT32F422_426_Firmware_Library.git",
+    "AT32F422_426_Firmware_Library": "https://github.com/ArteryTek/AT32F422_426_Firmware_Library.git",
     "AT32F423_Firmware_Library": "https://github.com/ArteryTek/AT32F423_Firmware_Library.git",
     "AT32F425_Firmware_Library": "https://github.com/ArteryTek/AT32F425_Firmware_Library.git",
     "AT32F435_437_Firmware_Library": "https://github.com/ArteryTek/AT32F435_437_Firmware_Library.git",
     "AT32F45x_Firmware_Library": "https://github.com/ArteryTek/AT32F45x_Firmware_Library.git",
-    "AT32F490_Firmware_Library": "https://gitee.com/arterytek/AT32F490_Firmware_Library.git",
+    "AT32F490_Firmware_Library": "https://github.com/ArteryTek/AT32F490_Firmware_Library.git",
     "AT32L021_Firmware_Library": "https://github.com/ArteryTek/AT32L021_Firmware_Library.git",
-    "AT32M412_416_Firmware_Library": "https://gitee.com/arterytek/AT32M412_416_Firmware_Library.git",
+    "AT32M412_416_Firmware_Library": "https://github.com/ArteryTek/AT32M412_416_Firmware_Library.git",
     "AT32WB415_Firmware_Library": "https://github.com/ArteryTek/AT32WB415_Firmware_Library.git",
+}
+
+# Gitee mirror URLs for the same repos — used as fallback when
+# GitHub is unreachable (common for users in China).
+PACKAGE_GIT_URLS_GITEE = {
+    k: v.replace("github.com/ArteryTek", "gitee.com/arterytek")
+    for k, v in PACKAGE_GIT_URLS.items()
 }
 
 package_name = BSP_PACKAGE_MAP.get(bsp)
@@ -99,6 +106,57 @@ def _extract_fw_version(pkg_dir, bsp_name):
     return None
 
 
+_MIRROR_CACHE_FILE = None  # set on first call
+
+
+def _preferred_mirror():
+    """Return 'github' or 'gitee'.
+
+    Auto-detects by probing both mirrors in parallel and picking
+    the one that responds first.  The result is cached so the
+    test runs only once.
+    """
+    global _MIRROR_CACHE_FILE
+
+    # Cached result
+    if _MIRROR_CACHE_FILE and isfile(_MIRROR_CACHE_FILE):
+        with open(_MIRROR_CACHE_FILE) as f:
+            return f.read().strip()
+
+    known_pkg = platform.get_package_dir("toolchain-gccarmnoneeabi")
+    pio_packages_dir = os.path.dirname(known_pkg)
+    _MIRROR_CACHE_FILE = join(pio_packages_dir, ".at32_git_mirror")
+
+    # Probe both mirrors in parallel — pick the fastest responder
+    import socket
+    import threading
+
+    result = {"mirror": None}
+
+    def _probe(host, label):
+        try:
+            socket.create_connection((host, 443), timeout=5).close()
+            if result["mirror"] is None:
+                result["mirror"] = label
+        except OSError:
+            pass
+
+    threads = [
+        threading.Thread(target=_probe, args=("github.com", "github")),
+        threading.Thread(target=_probe, args=("gitee.com", "gitee")),
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    mirror = result["mirror"] or "github"  # fallback if both fail
+
+    with open(_MIRROR_CACHE_FILE, "w") as f:
+        f.write(mirror)
+    return mirror
+
+
 def _ensure_framework_package(pkg_name):
     """
     Ensure the firmware library package is available locally.
@@ -109,7 +167,6 @@ def _ensure_framework_package(pkg_name):
     demand here and inject a package.json with the real version
     extracted from the device-support header.
     """
-    # Resolve the PlatformIO packages directory through an existing package
     known_pkg = platform.get_package_dir("toolchain-gccarmnoneeabi")
     pio_packages_dir = os.path.dirname(known_pkg)
     pkg_dir = join(pio_packages_dir, pkg_name)
@@ -117,27 +174,57 @@ def _ensure_framework_package(pkg_name):
     if isdir(pkg_dir) and isfile(join(pkg_dir, "package.json")):
         return pkg_dir
 
-    git_url = PACKAGE_GIT_URLS.get(pkg_name)
+    mirror = _preferred_mirror()
+    url_map = PACKAGE_GIT_URLS if mirror == "github" else PACKAGE_GIT_URLS_GITEE
+    git_url = url_map.get(pkg_name)
     if not git_url:
         sys.stderr.write(
             "Error! No git URL configured for package '%s'.\n" % pkg_name
         )
         sys.exit(1)
 
-    if not isdir(pkg_dir):
+    if isdir(pkg_dir):
+        # Directory exists but package.json is missing —
+        # user deleted it to trigger an update.  Pull latest.
+        print("Updating %s (git pull --ff-only) ..." % pkg_name)
+        try:
+            subprocess.check_call(
+                ["git", "-C", pkg_dir, "pull", "--ff-only"],
+                stdout=sys.stdout, stderr=sys.stderr,
+            )
+        except subprocess.CalledProcessError as e:
+            sys.stderr.write(
+                "Warning! Failed to update %s: %s\n" % (pkg_name, e)
+            )
+            sys.stderr.write(
+                "Proceeding with existing local copy.\n"
+            )
+    else:
         print("Fetching %s ..." % git_url)
         try:
             subprocess.check_call(
                 ["git", "clone", "--depth=1", git_url, pkg_dir],
                 stdout=sys.stdout, stderr=sys.stderr,
             )
-        except subprocess.CalledProcessError as e:
-            sys.stderr.write(
-                "Error! Failed to clone %s: %s\n" % (git_url, e)
-            )
-            sys.exit(1)
+        except subprocess.CalledProcessError:
+            # If GitHub failed, flip the cache and try Gitee once
+            if mirror == "github" and _MIRROR_CACHE_FILE:
+                with open(_MIRROR_CACHE_FILE, "w") as f:
+                    f.write("gitee")
+            git_url = PACKAGE_GIT_URLS_GITEE.get(pkg_name)
+            print("Retrying from Gitee mirror ...")
+            try:
+                subprocess.check_call(
+                    ["git", "clone", "--depth=1", git_url, pkg_dir],
+                    stdout=sys.stdout, stderr=sys.stderr,
+                )
+            except subprocess.CalledProcessError as e:
+                sys.stderr.write(
+                    "Error! Failed to clone from both GitHub and Gitee: %s\n" % e
+                )
+                sys.exit(1)
 
-    # Inject a package.json with the real firmware version
+    # Generate package.json once — only when missing
     pkg_json_path = join(pkg_dir, "package.json")
     if not isfile(pkg_json_path):
         version = _extract_fw_version(pkg_dir, bsp)
