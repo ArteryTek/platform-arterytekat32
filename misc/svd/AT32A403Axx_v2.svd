@@ -1549,6 +1549,30 @@
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
+            <field>
+              <name>EMACEN</name>
+              <description>EMACEN clock enable</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EMACTXEN</name>
+              <description>EMACEN Tx clock enable</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EMACRXEN</name>
+              <description>EMACEN Rx clock enable</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EMACPTPEN</name>
+              <description>EMACPTP clock enable</description>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
           </fields>
         </register>
         <register>
@@ -1984,6 +2008,24 @@
           </fields>
         </register>
         <register>
+          <name>AHBRST</name>
+          <displayName>AHBRST</displayName>
+          <description>AHB reset register
+          </description>
+          <addressOffset>0x28</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>EMACRST</name>
+              <description>EMAC reset</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>MISC1</name>
           <displayName>MISC1</displayName>
           <description>Miscellaneous register1 </description>
@@ -2079,6 +2121,13 @@
               <description>HEXT division</description>
               <bitOffset>12</bitOffset>
               <bitWidth>2</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EMAC_PPS_SEL</name>
+              <description>Ethernet pulse width Select</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
           </fields>
@@ -3275,6 +3324,13 @@
               <access>read-write</access>
             </field>
             <field>
+              <name>EMAC_MUX</name>
+              <description>Ethernet MAC muxing</description>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
               <name>CAN2_MUX</name>
               <description>CAN2 muxing</description>
               <bitOffset>22</bitOffset>
@@ -3782,6 +3838,12 @@
           <resetValue>0x00000000</resetValue>
           <fields>
             <field>
+              <name>EMAC_GMUX</name>
+              <description>Ethernet MAC muxing</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
               <name>MII_RMII_SEL_GMUX</name>
               <description>MII_RMII select muxing</description>
               <bitOffset>18</bitOffset>
@@ -3879,6 +3941,11 @@
         <name>USBFSWakeUp</name>
         <description>USB Device FS Wakeup interrupt connect to EXINT line18</description>
         <value>42</value>
+      </interrupt>
+      <interrupt>
+        <name>EMAC_WKUP</name>
+        <description>EMAC_WKUP interrupt connect to EXINT line19</description>
+        <value>80</value>
       </interrupt>
       <registers>
         <register>
@@ -26108,5 +26175,1902 @@
         </register>
       </registers>
     </peripheral>
-  </peripherals>
+    <peripheral>
+      <name>ETHERNET_MAC</name>
+      <description>Ethernet: media access control</description>
+      <groupName>ETHERNET</groupName>
+      <baseAddress>0x40028000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x100</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <interrupt>
+        <name>EMAC</name>
+        <description>Ethernet mac global interrupt</description>
+        <value>79</value>
+      </interrupt>
+      <registers>
+        <register>
+          <name>MACCTRL</name>
+          <displayName>MACCTRL</displayName>
+          <description>Ethernet MAC configuration register</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00008000</resetValue>
+          <fields>
+            <field>
+              <name>RE</name>
+              <description>Receiver enable</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TE</name>
+              <description>Transmitter enable</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DC</name>
+              <description>Deferral check</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>BL</name>
+              <description>Back-off limit</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>ACS</name>
+              <description>Automatic pad/CRC
+              stripping</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DR</name>
+              <description>Disable retry</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IPC</name>
+              <description>IPv4 checksum offload</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DM</name>
+              <description>Duplex mode</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>LM</name>
+              <description>Loopback mode</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DRO</name>
+              <description>Disable receive own</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FES</name>
+              <description>Fast EMAC speed</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DCS</name>
+              <description>Disable carrier sense</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IFG</name>
+              <description>Interframe gap</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>JD</name>
+              <description>Jabber disable</description>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>WD</name>
+              <description>Watchdog disable</description>
+              <bitOffset>23</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACFRMF</name>
+          <displayName>MACFRMF</displayName>
+          <description>Ethernet MAC frame filter register</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>PR</name>
+              <description>Promiscuous mode</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HUC</name>
+              <description>Hash unicast</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HMC</name>
+              <description>Hash multicast</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DAIF</name>
+              <description>Destination address inverse
+              filtering</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PMC</name>
+              <description>Pass multicast</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DBF</name>
+              <description>Disable broadcast frames</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PCF</name>
+              <description>Pass control frames</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>SAIF</name>
+              <description>Source address inverse
+              filtering</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SAF</name>
+              <description>Source address filter</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>HPF</name>
+              <description>Hash or perfect filter</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RA</name>
+              <description>Receive all</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACHTH</name>
+          <displayName>MACHTH</displayName>
+          <description>Ethernet MAC hash table high register</description>
+          <addressOffset>0x8</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HTH</name>
+              <description>Hash table high</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACHTL</name>
+          <displayName>MACHTL</displayName>
+          <description>Ethernet MAC hash table low register</description>
+          <addressOffset>0xC</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HTL</name>
+              <description>Hash table low</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACMIIADDR</name>
+          <displayName>MACMIIADDR</displayName>
+          <description>Ethernet MAC MII address register</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>MB</name>
+              <description>MII busy</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MW</name>
+              <description>MII write</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CR</name>
+              <description>Clock range</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>MII</name>
+              <description>MII register</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+            <field>
+              <name>PA</name>
+              <description>PHY address</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACMIIDT</name>
+          <displayName>MACMIIDT</displayName>
+          <description>Ethernet MAC MII data register</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>MD</name>
+              <description>MII data</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACFCTRL</name>
+          <displayName>MACFCTRL</displayName>
+          <description>Ethernet MAC flow control register</description>
+          <addressOffset>0x18</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>FCB_BPA</name>
+              <description>Flow control busy/back pressure
+              activate</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ETF</name>
+              <description>Enable transmit flow control
+              </description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ERF</name>
+              <description>Enable receive flow control
+              </description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DUP</name>
+              <description>Detect unicast pause frame</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PLT</name>
+              <description>Pause low threshold</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>DZQP</name>
+              <description>Disable zero-quanta pause</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PT</name>
+              <description>Pass time</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACVLT</name>
+          <displayName>MACVLT</displayName>
+          <description>Ethernet MAC VLAN tag register</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>VTI</name>
+              <description>VLAN tag identifier (for receive
+              frames)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>ETV</name>
+              <description>Enable 12-bit VLAN tag comparison</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACRWFF</name>
+          <displayName>MACRWFF</displayName>
+          <description>Ethernet MAC remote wakeup frame filter register</description>
+          <addressOffset>0x28</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>MACPMTCTRLSTS</name>
+          <displayName>MACPMTCTRLSTS</displayName>
+          <description>Ethernet MAC PMT control and status register</description>
+          <addressOffset>0x2C</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>PD</name>
+              <description>Power down</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EMP</name>
+              <description>Enable magic packet</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ERWF</name>
+              <description>Enable remote wakeup frame</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RMP</name>
+              <description>Received magic packet</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RRWF</name>
+              <description>Recevied remote wakeup frame</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GUC</name>
+              <description>Global unicast</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RWFFPR</name>
+              <description>Remote wakeup frame filter register pointer
+              reset</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACISTS</name>
+          <displayName>MACISTS</displayName>
+          <description>Ethernet MAC interrupt status register</description>
+          <addressOffset>0x38</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>PIS</name>
+              <description>PMT interrupt status</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MIS</name>
+              <description>MMC interrupt status</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MRIS</name>
+              <description>MMC receive interrupt status</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MTIS</name>
+              <description>MMC transmit interrupt status</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TIS</name>
+              <description>Timestamp interrupt status</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACIMR</name>
+          <displayName>MACIMR</displayName>
+          <description>Ethernet MAC interrupt mask register</description>
+          <addressOffset>0x3C</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>PIM</name>
+              <description>PMT interrupt mask</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TIM</name>
+              <description>Timestamp interrupt mask</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA0H</name>
+          <displayName>MACA0H</displayName>
+          <description>Ethernet MAC address 0 high register</description>
+          <addressOffset>0x40</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x0010FFFF</resetValue>
+          <fields>
+            <field>
+              <name>MA0H</name>
+              <description>MAC address0 high</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>AE</name>
+              <description>Address enable</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA0L</name>
+          <displayName>MACA0L</displayName>
+          <description>Ethernet MAC address 0 low register</description>
+          <addressOffset>0x44</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <fields>
+            <field>
+              <name>MA0L</name>
+              <description>MAC address0 low</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA1H</name>
+          <displayName>MACA1H</displayName>
+          <description>Ethernet MAC address 1 high register</description>
+          <addressOffset>0x48</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x0000FFFF</resetValue>
+          <fields>
+            <field>
+              <name>MA1H</name>
+              <description>MAC address1 high</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>MBC</name>
+              <description>Mask byte control</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>SA</name>
+              <description>Source address</description>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AE</name>
+              <description>Address enable</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA1L</name>
+          <displayName>MACA1L</displayName>
+          <description>Ethernet MAC address1 low register</description>
+          <addressOffset>0x4C</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <fields>
+            <field>
+              <name>MA1L</name>
+              <description>MAC address1 low</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA2H</name>
+          <displayName>MACA2H</displayName>
+          <description>Ethernet MAC address 2 high register</description>
+          <addressOffset>0x50</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x0050</resetValue>
+          <fields>
+            <field>
+              <name>MA2H</name>
+              <description>MAC address 2 high</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>MBC</name>
+              <description>Mask byte control</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>SA</name>
+              <description>Source address</description>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AE</name>
+              <description>Address enable</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA2L</name>
+          <displayName>MACA2L</displayName>
+          <description>Ethernet MAC address 2 low register</description>
+          <addressOffset>0x54</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <fields>
+            <field>
+              <name>MA2L</name>
+              <description>MAC address2 low</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>31</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA3H</name>
+          <displayName>MACA3H</displayName>
+          <description>Ethernet MAC address 3 high register</description>
+          <addressOffset>0x58</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x0000FFFF</resetValue>
+          <fields>
+            <field>
+              <name>MA3H</name>
+              <description>MAC address3 high</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>MBC</name>
+              <description>Mask byte control</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>SA</name>
+              <description>Source address</description>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AE</name>
+              <description>Address enable</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MACA3L</name>
+          <displayName>MACA3L</displayName>
+          <description>Ethernet MAC address 3 low register</description>
+          <addressOffset>0x5C</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+          <fields>
+            <field>
+              <name>MA3L</name>
+              <description>MAC address3 low</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>ETHERNET_MMC</name>
+      <description>Ethernet: MAC management counters</description>
+      <groupName>ETHERNET</groupName>
+      <baseAddress>0x40028100</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x100</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>MMCCTRL</name>
+          <displayName>MMCCTRL</displayName>
+          <description>Ethernet MMC control register</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RC</name>
+              <description>Reset counter</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SCR</name>
+              <description>Stop counter rollover</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RR</name>
+              <description>Reset on read</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FMC</name>
+              <description>Freeze MMC counter</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCRI</name>
+          <displayName>MMCRI</displayName>
+          <description>Ethernet MMC receive interrupt register</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RFCE</name>
+              <description>Received frames CRC error</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RFAE</name>
+              <description>Received frames alignment error</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RGUF</name>
+              <description>Received good unicast frames</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCTI</name>
+          <displayName>MMCTI</displayName>
+          <description>Ethernet MMC transmit interrupt register</description>
+          <addressOffset>0x8</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TSCGFCI</name>
+              <description>Transmit single collision good frame
+              counter interrupt</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TGFMSC</name>
+              <description>Transmit good frames more single
+              collision</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TGF</name>
+              <description>Transmitted good frames</description>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCRIM</name>
+          <displayName>MMCRIM</displayName>
+          <description>Ethernet MMC receive interrupt mask register</description>
+          <addressOffset>0xC</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RCEFCIM</name>
+              <description>Received CRC error frame counter interrupt
+              mask</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RAEFACIM</name>
+              <description>Received alignment error frame alignment
+              counter interrupt mask</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RUGFCIM</name>
+              <description>Received unicast good frame counter
+              interrupt mask</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCTIM</name>
+          <displayName>MMCTIM</displayName>
+          <description>Ethernet MMC transmit interrupt mask register</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TSCGFCIM</name>
+              <description>Transmit single collision good frame
+              counter interrupt mask</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TMCGFCIM</name>
+              <description>Transmit multiple collision good frame
+              counter interrupt mask</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TGFCIM</name>
+              <description>Transmitted good frame counter interrupt
+              mask</description>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCTFSCC</name>
+          <displayName>MMCTFSCC</displayName>
+          <description>Ethernet MMC transmitted good frames after a single collision counter</description>
+          <addressOffset>0x4C</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TGFSCC</name>
+              <description>Transmitted good frames single
+              collision counter</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCTFMSCC</name>
+          <displayName>MMCTFMSCC</displayName>
+          <description>Ethernet MMC transmitted good frames after more than a single collision</description>
+          <addressOffset>0x50</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TGFMSCC</name>
+              <description>Transmitted good frame more single
+              collision counter</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCTFCNT</name>
+          <displayName>MMCTFCNT</displayName>
+          <description>Ethernet MMC transmitted good frames counter register</description>
+          <addressOffset>0x68</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TGFC</name>
+              <description>Transmitted good frames
+              counter</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCRFCECNT</name>
+          <displayName>MMCRFCECNT</displayName>
+          <description>Ethernet MMC received frames with CRC error counter register</description>
+          <addressOffset>0x94</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RFCEC</name>
+              <description>Received frames CRC error counter</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCRFAECNT</name>
+          <displayName>MMCRFAECNT</displayName>
+          <description>Ethernet MMC received frames with alignment error counter register</description>
+          <addressOffset>0x98</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RFAEC</name>
+              <description>Received frames alignment error counter</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MMCRGUFCNT</name>
+          <displayName>MMCRGUFCNT</displayName>
+          <description>MMC received good unicast frames counter register</description>
+          <addressOffset>0xC4</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RGUFC</name>
+              <description>Received good unicast frames
+              counter</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>ETHERNET_PTP</name>
+      <description>Ethernet: Precision time protocol</description>
+      <groupName>ETHERNET</groupName>
+      <baseAddress>0x40028700</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x100</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>PTPTSCTRL</name>
+          <displayName>PTPTSCTRL</displayName>
+          <description>Ethernet PTP time stamp control register</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x2000</resetValue>
+          <fields>
+            <field>
+              <name>TE</name>
+              <description>Timestamp enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TFCU</name>
+              <description>Timestamp fine or coarse
+              update</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TI</name>
+              <description>Timestamp initialize</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TU</name>
+              <description>Timestamp update</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TITE</name>
+              <description>Timestamp interrupt trigger
+              enable</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ARU</name>
+              <description>Addend register update</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ATDS</name>
+              <description>Alternate dma descriptor size</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ETAF</name>
+              <description>Enable timestamp for all frames</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TDBRC</name>
+              <description>Timestamp digital or binary
+              rollover control</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPPV2F</name>
+              <description>Enable PTP packet processing for
+              version2 format</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPPEF</name>
+              <description>Enable processing of PTP
+              over EMAC frames</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPPFSIP6U</name>
+              <description>Enable processing of PTP frames
+              sent over IPv6-UDP</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EPPFSIP4U</name>
+              <description>Enable processing of PTP frames
+              sent over IPv4-UDP</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ETSFEM</name>
+              <description>Enable timestamp snapshot for
+              event message</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ESFMRTM</name>
+              <description>Enable snapshot for message
+              relevant to master</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SPPFTS</name>
+              <description>Select PTP packet for taking snapshot</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>EMAFPFF</name>
+              <description>Enable MAC address for PTP frame filtering</description>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPSSINC</name>
+          <displayName>PTPSSINC</displayName>
+          <description>Ethernet PTP subsecond increment register</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SSIV</name>
+              <description>Sub-second increment value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTSH</name>
+          <displayName>PTPTSH</displayName>
+          <description>Ethernet PTP time stamp high register</description>
+          <addressOffset>0x8</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TS</name>
+              <description>Timestamp second</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTSL</name>
+          <displayName>PTPTSL</displayName>
+          <description>Ethernet PTP time stamp low register</description>
+          <addressOffset>0xC</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TSS</name>
+              <description>Timestamp subseconds</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>31</bitWidth>
+            </field>
+            <field>
+              <name>AST</name>
+              <description>Add or subtract time</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTSHUD</name>
+          <displayName>PTPTSHUD</displayName>
+          <description>Ethernet PTP time stamp high update register</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TS</name>
+              <description>Timestamp second</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTSLUD</name>
+          <displayName>PTPTSLUD</displayName>
+          <description>Ethernet PTP time stamp low update register</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TSS</name>
+              <description>Timestamp subseconds</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>31</bitWidth>
+            </field>
+            <field>
+              <name>AST</name>
+              <description>Add or subtract time</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTSAD</name>
+          <displayName>PTPTSAD</displayName>
+          <description>Ethernet PTP time stamp addend register</description>
+          <addressOffset>0x18</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TAR</name>
+              <description>Timestamp addend register</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTTH</name>
+          <displayName>PTPTTH</displayName>
+          <description>Ethernet PTP target time high register</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TTSR</name>
+              <description>Target time seconds register</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTTL</name>
+          <displayName>PTPTTL</displayName>
+          <description>Ethernet PTP target time low register</description>
+          <addressOffset>0x20</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TTLR</name>
+              <description>Target timestamp low register</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPTSSR</name>
+          <displayName>PTPTSSR</displayName>
+          <description>Ethernet PTP time stamp status register</description>
+          <addressOffset>0x28</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TSO</name>
+              <description>Timestamp second overflow</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TTTR</name>
+              <description>Timestamp target time reached</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PTPPPSCR</name>
+          <displayName>PTPPPSCR</displayName>
+          <description>Ethernet PTP PPS control register</description>
+          <addressOffset>0x2C</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>POFC</name>
+              <description>PPS Output frequency control</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
+      <name>ETHERNET_DMA</name>
+      <description>Ethernet: DMA controller operation</description>
+      <groupName>ETHERNET</groupName>
+      <baseAddress>0x40029000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x100</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>DMABM</name>
+          <displayName>DMABM</displayName>
+          <description>Ethernet DMA bus mode register</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x20101</resetValue>
+          <fields>
+            <field>
+              <name>SWR</name>
+              <description>Software reset</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DA</name>
+              <description>DMA Arbitration</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DSL</name>
+              <description>Descriptor skip length</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+            <field>
+              <name>PBL</name>
+              <description>Programmable burst length</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>PR</name>
+              <description>Priority ratio</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>FB</name>
+              <description>Fixed burst</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RDP</name>
+              <description>Rx DMA PBL</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>USP</name>
+              <description>Use separate PBL</description>
+              <bitOffset>23</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PBLx8</name>
+              <description>PNLx8 mode</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AAB</name>
+              <description>Address-aligned beats</description>
+              <bitOffset>25</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMATPD</name>
+          <displayName>DMATPD</displayName>
+          <description>Ethernet DMA transmit poll demand register</description>
+          <addressOffset>0x4</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TPD</name>
+              <description>Transmit poll demand</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMARPD</name>
+          <displayName>DMARPD</displayName>
+          <description>EHERNET DMA receive poll demand register</description>
+          <addressOffset>0x8</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RPD</name>
+              <description>Receive poll demand</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMARDLADDR</name>
+          <displayName>DMARDLADDR</displayName>
+          <description>Ethernet DMA receive descriptor list address register</description>
+          <addressOffset>0xC</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SRL</name>
+              <description>Start of receive list</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMATDLADDR</name>
+          <displayName>DMATDLADDR</displayName>
+          <description>Ethernet DMA transmit descriptor list address register</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>STL</name>
+              <description>Start of transmit list</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMASTS</name>
+          <displayName>DMASTS</displayName>
+          <description>Ethernet DMA status register</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TI</name>
+              <description>Transmit interrupt</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>TPS</name>
+              <description>Transmit process stopped</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>TBU</name>
+              <description>Transmit buffer unavailable</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>TJT</name>
+              <description>Transmit jabber timeout</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OVF</name>
+              <description>Receive overflow</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UNF</name>
+              <description>Transmit underflow</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RI</name>
+              <description>Receive interrupt</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RBU</name>
+              <description>Receive buffer unavailable</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RPS</name>
+              <description>Receive process stopped</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RWT</name>
+              <description>Receive watchdog timeout</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ETI</name>
+              <description>Early transmit interrupt</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FBEI</name>
+              <description>Fatal bus error interrupt</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ERI</name>
+              <description>Early receive interrupt</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>AIS</name>
+              <description>Abnormal interrupt summary</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>NIS</name>
+              <description>Normal interrupt summary</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RS</name>
+              <description>Receive process state</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>3</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>TS</name>
+              <description>Transmit process state</description>
+              <bitOffset>20</bitOffset>
+              <bitWidth>3</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>EB</name>
+              <description>Error bits</description>
+              <bitOffset>23</bitOffset>
+              <bitWidth>3</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>MMI</name>
+              <description>MAC MMC interrupt</description>
+              <bitOffset>27</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>MPI</name>
+              <description>MAC PMT interrupt</description>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>TTI</name>
+              <description>Timestamp trigger interrupt</description>
+              <bitOffset>29</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMAOPM</name>
+          <displayName>DMAOPM</displayName>
+          <description>Ethernet DMA operation mode register</description>
+          <addressOffset>0x18</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SSR</name>
+              <description>Start or stop receive</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OSF</name>
+              <description>Operate on second frame</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RTC</name>
+              <description>Receive threshold control</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>FUGF</name>
+              <description>Forward undersized good frames</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FEF</name>
+              <description>Forward error frames</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SSTC</name>
+              <description>Start of stop transmission command</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TTC</name>
+              <description>Transmit threshold control</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>3</bitWidth>
+            </field>
+            <field>
+              <name>FTF</name>
+              <description>Flush transmit FIFO</description>
+              <bitOffset>20</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TSF</name>
+              <description>Transmit store and forward</description>
+              <bitOffset>21</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DFRF</name>
+              <description>Disable flushing of received
+              frames</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RSF</name>
+              <description>Receive store and forward</description>
+              <bitOffset>25</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DT</name>
+              <description>Disable dropping of TCP/IP
+              checksum error frames</description>
+              <bitOffset>26</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMAIE</name>
+          <displayName>DMAIE</displayName>
+          <description>Ethernet DMA interrupt enable register</description>
+          <addressOffset>0x1C</addressOffset>
+          <size>0x20</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TIE</name>
+              <description>Transmit interrupt enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TSE</name>
+              <description>Transmit stopped enable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TUE</name>
+              <description>Transmit buffer unavailable enable</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TJE</name>
+              <description>Transmit jabber timeout enable</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OVE</name>
+              <description>Overflow interrupt enable</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>UNE</name>
+              <description>Underflow interrupt enable</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RIE</name>
+              <description>Receive interrupt enable</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RBUE</name>
+              <description>Receive buffer unavailable enable</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RSE</name>
+              <description>Receive stopped enable</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RWTE</name>
+              <description>receive watchdog timeout enable</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EIE</name>
+              <description>Early transmit interrupt enable</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>FBEE</name>
+              <description>Fatal bus error enable</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ERE</name>
+              <description>Early receive interrupt
+              enable</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>AIE</name>
+              <description>Abnormal interrupt enable</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>NIE</name>
+              <description>Normal interrupt enable</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMAMFBOCNT</name>
+          <displayName>DMAMFBOCNT</displayName>
+          <description>Ethernet DMA missed frame and buffer overflow counter register</description>
+          <addressOffset>0x20</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>MFC</name>
+              <description>Missed frames control</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+            <field>
+              <name>OBMFC</name>
+              <description>Overflow bit for missed frame
+              counter</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OFC</name>
+              <description>Overflow frame counter</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>11</bitWidth>
+            </field>
+            <field>
+              <name>OBFOC</name>
+              <description>Overflow bit for FIFO overflow
+              counter</description>
+              <bitOffset>28</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMACTD</name>
+          <displayName>DMACTD</displayName>
+          <description>Ethernet DMA current host transmit descriptor register</description>
+          <addressOffset>0x48</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HTDAP</name>
+              <description>Host transmit descriptor address pointer</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMACRD</name>
+          <displayName>DMACRD</displayName>
+          <description>Ethernet DMA current host receive descriptor register</description>
+          <addressOffset>0x4C</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HRDAP</name>
+              <description>Host receive descriptor address pointer</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMACTBADDR</name>
+          <displayName>DMACTBADDR</displayName>
+          <description>Ethernet DMA current host transmit buffer address register</description>
+          <addressOffset>0x50</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HTBAP</name>
+              <description>Host transmit buffer address pointer</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DMACRBADDR</name>
+          <displayName>DMACRBADDR</displayName>
+          <description>Ethernet DMA current host receive buffer address register</description>
+          <addressOffset>0x54</addressOffset>
+          <size>0x20</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HRBAP</name>
+              <description>Host receive buffer address pointer</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    </peripherals>
 </device>

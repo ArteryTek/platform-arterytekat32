@@ -12923,6 +12923,163 @@
         <value>26</value>
       </interrupt>
     </peripheral>
+    <peripheral>
+      <name>ACC</name>
+      <description>HICK Auto Clock Calibration</description>
+      <groupName>ACC</groupName>
+      <baseAddress>0x40015800</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x400</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>STS</name>
+          <displayName>STS</displayName>
+          <description>status register</description>
+          <addressOffset>0x0</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x0000</resetValue>
+          <fields>
+            <field>
+              <name>RSLOST</name>
+              <description>Reference Signal Lost</description>
+              <access>read-write</access>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CALRDY</name>
+              <description>Internal high-speed clock calibration ready</description>
+              <access>read-write</access>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CTRL1</name>
+          <displayName>CTRL1</displayName>
+          <description>control register 1</description>
+          <addressOffset>0x04</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x0100</resetValue>
+          <fields>
+            <field>
+              <name>STEP</name>
+              <description>STEP</description>
+              <access>read-write</access>
+              <bitOffset>8</bitOffset>
+              <bitWidth>4</bitWidth>
+            </field>
+            <field>
+              <name>CALRDYIEN</name>
+              <description>CALRDY interrupt enable</description>
+              <access>read-write</access>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>EIEN</name>
+              <description>RSLOST error interrupt enable</description>
+              <access>read-write</access>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENTRIM</name>
+              <description>Enable trim</description>
+              <access>read-write</access>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CALON</name>
+              <description>Calibration on</description>
+              <access>read-write</access>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CTRL2</name>
+          <displayName>CTRL2</displayName>
+          <description>control register 2</description>
+          <addressOffset>0x08</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x2080</resetValue>
+          <fields>
+            <field>
+              <name>HICKTWK</name>
+              <description>Internal high-speed auto clock trimming</description>
+              <access>read-only</access>
+              <bitOffset>8</bitOffset>
+              <bitWidth>6</bitWidth>
+            </field>
+            <field>
+              <name>HICKCAL</name>
+              <description>Internal high-speed auto clock calibration</description>
+              <access>read-only</access>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>C1</name>
+          <displayName>C1</displayName>
+          <description>compare value 1</description>
+          <addressOffset>0x0C</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x1F2C</resetValue>
+          <fields>
+            <field>
+              <name>C1</name>
+              <description>Compare 1</description>
+              <access>read-write</access>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>C2</name>
+          <displayName>C2</displayName>
+          <description>compare value 2</description>
+          <addressOffset>0x10</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x1F40</resetValue>
+          <fields>
+            <field>
+              <name>C2</name>
+              <description>Compare 2</description>
+              <access>read-write</access>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>C3</name>
+          <displayName>C3</displayName>
+          <description>compare value 3</description>
+          <addressOffset>0x14</addressOffset>
+          <size>0x20</size>
+          <resetValue>0x1F54</resetValue>
+          <fields>
+            <field>
+              <name>C3</name>
+              <description>Compare 3</description>
+              <access>read-write</access>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
     <peripheral derivedFrom="TMR10">
       <name>TMR13</name>
       <baseAddress>0x40001C00</baseAddress>
@@ -24641,12 +24798,6 @@
               <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>POLY_SIZE</name>
-              <description>Polynomial size</description>
-              <bitOffset>3</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
               <name>REVID</name>
               <description>Reverse input data</description>
               <bitOffset>5</bitOffset>
@@ -24672,23 +24823,6 @@
             <field>
               <name>IDT</name>
               <description>Initial Data</description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>32</bitWidth>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>POLY</name>
-          <displayName>POLY</displayName>
-          <description>Polynomial coefficient register</description>
-          <addressOffset>0x14</addressOffset>
-          <size>0x20</size>
-          <access>read-write</access>
-          <resetValue>0x04C11DB7</resetValue>
-          <fields>
-            <field>
-              <name>POLY</name>
-              <description>polynomial coefficient</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
             </field>

@@ -36,8 +36,8 @@
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd" >
   <vendor>Keil</vendor>                                       <!-- device vendor name -->
   <vendorID>ArteryTek</vendorID>                                        <!-- device vendor short name -->
-  <name>AT32F423xx_v2</name>                                        <!-- name of part-->
-  <series>AT32F423</series>                                         <!-- device series the device belongs to -->
+  <name>AT32A423xx_v2</name>                                        <!-- name of part-->
+  <series>AT32A423</series>                                         <!-- device series the device belongs to -->
   <version>1.0</version>                                          <!-- version of this description, adding CMSIS-SVD 1.1 tags -->
   <description>ARM 32-bit Cortex-M4 Microcontroller based device, CPU clock up to 288MHz, etc. </description>
   <licenseText>                                                   <!-- this license text will appear in header file. \n force line breaks -->
