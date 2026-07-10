@@ -6,6 +6,17 @@
 pio pkg install -g -p https://github.com/ArteryTek/platform-arterytekat32
 ```
 
+## Updating the platform
+
+```bash
+# Pull the latest version of this platform package
+pio pkg update -g -p https://github.com/ArteryTek/platform-arterytekat32
+
+# If that fails, force reinstall:
+#   pio pkg uninstall -g --platform arterytekat32
+#   pio pkg install -g -p https://github.com/ArteryTek/platform-arterytekat32
+```
+
 ## Quick Start
 
 Create a `platformio.ini` in your project directory:
@@ -192,15 +203,6 @@ On first build, the platform:
 
 The clone is cached in `~/.platformio/packages/` — subsequent builds
 use the local copy directly.
-
-```mermaid
-flowchart LR
-    A[platformio.ini] -->|board| B[board.json]
-    B -->|bsp field| C{BSP_PACKAGE_MAP}
-    C -->|AT32F403| D[AT32F403_Firmware_Library}
-    D -->|git clone| E[~/.platformio/packages/]
-    E --> F[Compile libraries + middlewares]
-```
 
 ### Automatic GitHub / Gitee mirror fallback
 
