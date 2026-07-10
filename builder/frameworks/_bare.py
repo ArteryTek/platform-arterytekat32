@@ -11,15 +11,13 @@ cpu_type = board.get("build.cpu", "cortex-m4") # 默认为cortex-m4，如果是c
 gcc_cpu = "cortex-m0plus" if cpu_type == "cortex-m0+" else cpu_type
 
 env.Append(
-    ASFLAGS=["-x", "assembler-with-cpp"],
-
     CCFLAGS=[
         "-Os",  # optimize for size
         "-ffunction-sections",  # place each function in its own section
         "-fdata-sections",
         "-Wall",
         "-mthumb",
-        "-mcpu=%s" % gcc_cpu,  # <-- 已更改: 获取动态 CPU 类型
+        "-mcpu=%s" % gcc_cpu,
         "-save-temps=obj" # 生成中间文件供检查优化
     ],
 
@@ -38,7 +36,7 @@ env.Append(
         "--specs=nano.specs",
         "--specs=nosys.specs",
         "-mthumb",
-        "-mcpu=%s" % gcc_cpu,  # <-- 已更改: 获取动态 CPU 类型
+        "-mcpu=%s" % gcc_cpu,
         "-Wl,-Map,%s/linkmap.map" % env.get("BUILD_DIR")
     ],
 
@@ -52,4 +50,15 @@ if "BOARD" in env:
         ]
     )
 
+# Copy CCFLAGS (mcpu, mthumb, …) into ASFLAGS so they are available to
+# ``$ASPPCOM`` (which runs ``$CC -x assembler-with-cpp …`` for .S files).
+# Do NOT put ``-x assembler-with-cpp`` into ASFLAGS – it is a gcc flag,
+# not a gas flag, so it breaks if ever passed to the plain assembler.
 env.Append(ASFLAGS=env.get("CCFLAGS", [])[:])
+
+# ArteryTek official firmware libs ship startup files with .s (lowercase)
+# extension.  SCons runs ``$AS $ASFLAGS`` for .s files, but the plain
+# assembler does not know about cpu/flags that should come from CCFLAGS.
+# Override ASCOM so that .s files go through the C preprocessor (just
+# like .S files) via ``$CC -x assembler-with-cpp …``.
+env["ASCOM"] = env["ASPPCOM"]

@@ -17,10 +17,9 @@
     "engines": {
         "platformio": "^5"
     },
-    "version": "1.0.3",
+    "version": "2.0.0",
     "frameworks": {
         "at32firmlib": {
-            "package": "framework-at32firmlib",
             "script": "builder/frameworks/at32firmlib.py",
             "title": "ArteryTek AT32 Firmware Library"
         }
@@ -30,10 +29,6 @@
             "type": "toolchain",
             "owner": "platformio",
             "version": ">=1.60301.0,<1.80000.0"
-        },
-        "framework-at32firmlib": {
-            "type": "framework",
-            "version": "https://github.com/ArteryTek/framework-at32firmlib.git"
         },
         "tool-openocd-at32": {
             "type": "uploader",
