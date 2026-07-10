@@ -10,7 +10,7 @@
     "fpu": "Yes"
   },
   "debug": {
-    "openocd_target": "at32f457xx",
+    "openocd_target": "at32f45xx",
     "svd_path": "AT32F457xx_v2.svd"
   },
   "frameworks": [

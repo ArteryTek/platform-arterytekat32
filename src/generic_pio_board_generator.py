@@ -33,10 +33,26 @@ bspDict = {
 
 
 def get_ocd_target(product, sku):
-    if(product in ['AT32F435', 'AT32F437']):
-        return product.lower() + 'xM' if sku[9] == 'M' else product.lower() + 'xx'
+    # Flash size letter sits at position len(product)+1 in the SKU:
+    #   {Product}{Pin}{Flash}{Package}{Temp}
+    #   e.g. AT32F435+C+G+T+7  → flash='G' (1024K)
+    #        AT32F403+Z+C+T+6  → flash='C' (256K)
+    flash_letter = sku[len(product) + 1] if len(sku) > len(product) + 1 else '?'
+
+    # Products that have specific OpenOCD configs with dual flash banks
+    #   xG → 1024K (bank1 @ 0x08000000, bank2 @ 0x08080000)
+    #   xM → 4032K (bank1 @ 0x08000000, bank2 @ 0x08200000)
+    #   xx → generic single-bank (auto-probe) — always safe
+
+    # Some series share a single OpenOCD config across multiple product names
+    if product in ('AT32F455', 'AT32F456', 'AT32F457'):
+        ocd_product = 'AT32F45'  # config file is at32f45xx.cfg, not at32f45xxx
     else:
-        return product.lower() + 'xx'
+        ocd_product = product
+
+    if flash_letter in ('G', 'M') and ocd_product in ('AT32F403', 'AT32F403A', 'AT32F407', 'AT32F435', 'AT32F437'):
+        return ocd_product.lower() + 'x' + flash_letter
+    return ocd_product.lower() + 'xx'
 
 
 def get_bsp(product):

@@ -10,7 +10,7 @@
     "fpu": "Yes"
   },
   "debug": {
-    "openocd_target": "at32f403axx",
+    "openocd_target": "at32f403axG",
     "svd_path": "AT32F403Axx_v2.svd"
   },
   "frameworks": [
