@@ -254,15 +254,26 @@ if(middlewares):
                     join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source", "portable", "GCC", freertos_port_dir)
                 ]
             )
+            # Read heap manager from project option (default: heap_4).
+            # Usage in platformio.ini:
+            #   board_build.freertos_heap = heap_2.c    # built-in heap
+            #   board_build.freertos_heap = ""          # skip heap (user provides own)
+            freertos_heap = board.get("build.freertos_heap", "heap_4.c")
+            src_filter = [
+                "+<*.c>",
+                "+<portable/common/*.c>",
+                "+<portable/gcc/" + freertos_port_dir + "/*.c>",
+            ]
+            if freertos_heap:
+                src_filter.append("+<portable/memmang/" + freertos_heap + ">")
+                print("FreeRTOS heap: %s\r\n" % freertos_heap)
+            else:
+                print("FreeRTOS heap: skipped (user-provided)\r\n")
+
             libs.append(env.BuildLibrary(
                 join("$BUILD_DIR", "middleware", x.strip()),
                 join(FRAMEWORK_MIDDLEWARE_DIR, x.strip(), "source"),
-                src_filter=[
-                    "+<*.c>",
-                    "+<portable/common/*.c>",
-                    "+<portable/gcc/" + freertos_port_dir + "/*.c>",
-                    "+<portable/memmang/heap_4.c>"
-                ]
+                src_filter=src_filter
             ))
         elif x in ("usbd_drivers", "usbh_drivers"):
             is_host = x == "usbh_drivers"
